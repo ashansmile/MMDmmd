@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/item_jianbian"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_service_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:text="名字"/>
+
+    <TextView
+        android:id="@+id/textView_service_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:textColor="#9E9E9E"
+        android:maxEms="10"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="http://ekqhebqeqjkbehkhkhkhkhkhkhkhkhkhkhkhkejqne"
+        />
+</LinearLayout>
