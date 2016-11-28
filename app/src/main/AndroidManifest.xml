@@ -14,17 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".base.BaseActivity" />
-        <activity android:name=".activity.LoginActivity" />
         <activity
             android:name=".activity.WorkeActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTop" />
+        <activity android:name=".main.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.SplashActivity" />
         <activity android:name=".activity.NavationActivity" />
 
         <receiver
@@ -38,10 +37,13 @@
         </receiver>
 
         <activity android:name=".activity.ErJiTableActivity" />
+        <activity android:name=".activity.SanjiTableActivity" />
         <activity android:name=".activity.FuwuqiLiebiaoActivity" />
         <activity android:name=".activity.ShouChangActivity" />
         <activity android:name=".activity.GuanyuActivity" />
-        <activity android:name=".activity.Login"></activity>
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.FuwuqiBianjiActivity"></activity>
     </application>
 
 </manifest>

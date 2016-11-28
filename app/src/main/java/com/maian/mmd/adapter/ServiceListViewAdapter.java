@@ -48,7 +48,7 @@ public class ServiceListViewAdapter extends BaseAdapter{
             vh = (ViewHolder)convertView.getTag();
         }
         vh.textView_service_name.setText(list.get(position).serviceName);
-        vh.getTextView_service_adress.setText(list.get(position).serviceAddress);
+        vh.getTextView_service_adress.setText(list.get(position).url);
         return convertView;
     }
     class ViewHolder{

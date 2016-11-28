@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maian.mmd.R;
+import com.maian.mmd.entity.ResultCode;
 
 import java.util.List;
 
@@ -14,13 +15,13 @@ import java.util.List;
  * Created by Administrator on 2016/11/14.
  */
 public class GridViewAdapter extends BaseAdapter {
-    List<String> listText;
+    List<ResultCode> listText;
     public int[] imgs = { R.drawable.icon_big_1, R.drawable.icon_big_2,
             R.drawable.icon_big_3, R.drawable.icon_big_4,
             R.drawable.icon_big_5, R.drawable.icon_big_6,
             R.drawable.icon_big_7, R.drawable.icon_big_8, R.drawable.icon_big_9, };
 
-    public GridViewAdapter(List<String> listText) {
+    public GridViewAdapter(List<ResultCode> listText) {
         this.listText = listText;
     }
 
@@ -51,7 +52,7 @@ public class GridViewAdapter extends BaseAdapter {
         }else {
             vh = (ViewHolder) convertView.getTag();
         }
-        vh.text.setText(listText.get(position));
+        vh.text.setText(listText.get(position).catName);
         vh.img.setImageResource(imgs[position]);
 
         return convertView;

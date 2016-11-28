@@ -1,7 +1,9 @@
 package com.maian.mmd.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -10,35 +12,128 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.maian.mmd.R;
 import com.maian.mmd.adapter.GridViewAdapter;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
+import com.maian.mmd.entity.ResultCode;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.DataCleanManager;
+import com.maian.mmd.utils.HDbManager;
+import com.maian.mmd.utils.Login;
+import com.maian.mmd.utils.xutilsCallBack;
 import com.maian.mmd.view.CarouselView;
 
+import org.xutils.DbManager;
+import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.maian.mmd.utils.Contact.serviceUrl;
+
 public class WorkeActivity extends BaseActivity {
 
     private LinearLayout leftLinearLayout;
-    private List<String> grildList;
-    private GridView gridView;
-
+    private List<ResultCode> grildList;
+    private PullToRefreshGridView gridView;
+    private GridViewAdapter grildAdapter;
+    private TextView textView_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worke);
+
+        initgridlViewdata();
         initHead();
         initViewPager();
         initLeft();
-        initGrildViewDatas();
         initGrildView();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initUserName();
+    }
+
+    private void initgridlViewdata() {
+        grildList = new ArrayList<>();
+        Login.tongZhiPhone();
+        getData();
+    }
+
+    private void getData() {
+        if (!Login.isLogin(MMDApplication.user.name)) {
+            x.http().post(Login.loginParms(MMDApplication.user.name, MMDApplication.user.pwd), new xutilsCallBack<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                            getmainXinxi();
+                        }
+                    }
+            );
+        } else {
+            getmainXinxi();
+        }
+    }
+
+    private void addDatasFromDB() {
+        DbManager db = x.getDb(HDbManager.getZhuYeDb());
+        try {
+            grildList = db.selector(ResultCode.class).findAll();
+            //System.out.println( "-----list:"+list.size());
+            if (grildList == null) {
+                grildList = new ArrayList<>();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getmainXinxi() {
+        RequestParams params = new RequestParams(serviceUrl);
+        params.addBodyParameter("className", "CatalogPublishService");
+        params.addBodyParameter("params", "[]");
+        params.addBodyParameter("methodName", "getPublishCatalogsOfCurrentUser");
+        x.http().post(params, new xutilsCallBack<String>() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("----mainXinxi:" + result);
+                com.alibaba.fastjson.JSONObject data = JSON.parseObject(result);
+                String root = data.getString("result");
+                JSONArray arr = JSON.parseArray(root);
+                for (int i = 0; i < arr.size(); i++) {
+                    ResultCode n = JSON.parseObject(arr.get(i).toString(), ResultCode.class);
+                    System.out.println("----json:" + n.catName);
+                    grildList.add(n);
+                }
+
+                if (HDbManager.SAVEDBBIAOZHI == 0) {
+                    saveSouyeDB();
+                    HDbManager.SAVEDBBIAOZHI = 1;
+                }
+                if (grildList.size() == 0) {
+                    addDatasFromDB();
+                }
+                if (grildAdapter != null) {
+                    grildAdapter.notifyDataSetChanged();
+                }
+                gridView.onRefreshComplete();
+
+            }
+        });
+    }
+
+    private void initUserName() {
+        textView_name.setText(MMDApplication.user.name);
     }
 
     private void initHead() {
@@ -48,32 +143,39 @@ public class WorkeActivity extends BaseActivity {
         imgShouchang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), ErJiTableActivity.class);
+                Intent intent = new Intent(getBaseContext(), ShouChangActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void initGrildViewDatas() {
-        grildList = new ArrayList<>();
-        //textDatas
-        grildList.add("测试");
-        grildList.add("测试");
-        grildList.add("测试");
-        grildList.add("测试");
-
-    }
 
     private void initGrildView() {
-        gridView = (GridView) findViewById(R.id.gridView);
-        GridViewAdapter adapter = new GridViewAdapter(grildList);
-        gridView.setAdapter(adapter);
+        gridView = (PullToRefreshGridView) findViewById(R.id.refreshGridView);
+        grildAdapter = new GridViewAdapter(grildList);
+        gridView.setAdapter(grildAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), "点击了", Toast.LENGTH_SHORT);
                 Intent intent = new Intent(getBaseContext(), ErJiTableActivity.class);
+                System.out.println("----grildView:" + position);
+                intent.putExtra("resultCode", grildList.get(position));
                 startActivity(intent);
+
+            }
+        });
+        gridView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
+
+            @Override
+            public void onPullDownToRefresh(
+                    PullToRefreshBase<GridView> refreshView) {
+                grildList.clear();
+                getData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(
+                    PullToRefreshBase<GridView> refreshView) {
 
             }
         });
@@ -82,12 +184,7 @@ public class WorkeActivity extends BaseActivity {
 
     private void initLeft() {
 
-        TextView textView_name = (TextView) findViewById(R.id.textView_user_name) ;
-        if (MMDApplication.User != null){
-            textView_name.setText(MMDApplication.User);
-        }else{
-            textView_name.setText("未登陆");
-        }
+        textView_name = (TextView) findViewById(R.id.textView_user_name);
 
 
         //服务器
@@ -96,7 +193,7 @@ public class WorkeActivity extends BaseActivity {
         textView_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),FuwuqiLiebiaoActivity.class);
+                Intent intent = new Intent(getBaseContext(), FuwuqiLiebiaoActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,8 +204,8 @@ public class WorkeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    String cacheSize =  DataCleanManager.getTotalCacheSize(getBaseContext());
-                    Toast.makeText(WorkeActivity.this, "你已清除"+cacheSize, Toast.LENGTH_SHORT).show();
+                    String cacheSize = DataCleanManager.getTotalCacheSize(getBaseContext());
+                    Toast.makeText(WorkeActivity.this, "你已清除" + cacheSize, Toast.LENGTH_SHORT).show();
                     DataCleanManager.clearAllCache(getBaseContext());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -117,23 +214,23 @@ public class WorkeActivity extends BaseActivity {
             }
         });
         //关于
-        TextView textView_guanyu= (TextView) findViewById(R.id.textView_guanyu);
+        TextView textView_guanyu = (TextView) findViewById(R.id.textView_guanyu);
         textView_guanyu.setClickable(true);
         textView_guanyu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),GuanyuActivity.class);
+                Intent intent = new Intent(getBaseContext(), GuanyuActivity.class);
                 startActivity(intent);
             }
         });
         //注销
-        TextView textView_zhuxiao= (TextView) findViewById(R.id.textView_zhuxiao);
+        TextView textView_zhuxiao = (TextView) findViewById(R.id.textView_zhuxiao);
         textView_zhuxiao.setClickable(true);
         textView_zhuxiao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MMDApplication.User = null;
-                Intent intent = new Intent(getBaseContext(),Login.class);
+                // MMDApplication.user = null;
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -158,8 +255,6 @@ public class WorkeActivity extends BaseActivity {
 
                 x.image().bind(imageView, Contact.img_lunbo[position]);
                 imageView.setOnClickListener(new View.OnClickListener() {
-                    int tem = position;
-
                     @Override
                     public void onClick(View v) {
                     }
@@ -172,6 +267,19 @@ public class WorkeActivity extends BaseActivity {
                 return Contact.img_lunbo.length;
             }
         });
+    }
 
+    private void saveSouyeDB() {
+        DbManager db = x.getDb(HDbManager.getZhuYeDb());
+        if (grildList != null) {
+
+            for (int i = 0; i < grildList.size(); i++) {
+                try {
+                    db.save(grildList.get(i));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,10 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.maian.mmd.activity.WorkeActivity;
+import com.maian.mmd.utils.HDbManager;
+
+import org.xutils.DbManager;
+import org.xutils.x;
 
 public class BaseActivity extends AppCompatActivity {
     BaseActivity mActivity;
@@ -34,9 +38,16 @@ public class BaseActivity extends AppCompatActivity {
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
         } else {
-            finish();
+            for (int i = 0; i < MMDApplication.activityManagers.size(); i++) {
+                MMDApplication.activityManagers.get(i).finish();
+            }
             System.exit(0);
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MMDApplication.activityManagers.add(mActivity);
+    }
 }

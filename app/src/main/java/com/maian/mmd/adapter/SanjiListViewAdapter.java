@@ -12,12 +12,13 @@ import com.maian.mmd.entity.ErJiLiebiao;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/15.
+ * Created by admin on 2016/11/23.
  */
-public class ErJiListViewAdapter extends BaseAdapter {
+
+public class SanjiListViewAdapter extends BaseAdapter {
     List<ErJiLiebiao> listText;
 
-    public ErJiListViewAdapter(List<ErJiLiebiao> listText) {
+    public SanjiListViewAdapter(List<ErJiLiebiao> listText) {
         this.listText = listText;
     }
 

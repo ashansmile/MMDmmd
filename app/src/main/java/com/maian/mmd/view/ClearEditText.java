@@ -40,8 +40,8 @@ public class ClearEditText extends EditText {
     }
 
     private void init() {
-        imgInable = mContext.getResources().getDrawable(R.mipmap.ic_launcher);
-        imgAble = mContext.getResources().getDrawable(R.mipmap.ic_launcher);
+        imgInable = mContext.getResources().getDrawable(R.drawable.close);
+        imgAble = mContext.getResources().getDrawable(R.drawable.close);
         addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}

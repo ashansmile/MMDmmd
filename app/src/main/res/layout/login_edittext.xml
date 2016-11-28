@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="15dp"
         android:inputType="number"
-        android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ@.#-+"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@.#-+"
         android:background="@null"
         android:maxLength="13" />
 </LinearLayout>

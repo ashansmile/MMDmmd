@@ -15,10 +15,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.maian.mmd.R;
 import com.maian.mmd.adapter.ErJiListViewAdapter;
+import com.maian.mmd.adapter.SanjiListViewAdapter;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.ErJiLiebiao;
-import com.maian.mmd.entity.ResultCode;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.Login;
 import com.maian.mmd.utils.xutilsCallBack;
@@ -29,27 +29,68 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ErJiTableActivity extends BaseActivity {
-    List<ErJiLiebiao> listErji;
-    ResultCode result;
-    ErJiListViewAdapter adapter;
-    PullToRefreshListView listViewErji;
+public class SanjiTableActivity extends BaseActivity {
+    ErJiLiebiao erjiEntity;
+    List<ErJiLiebiao> list;
+    SanjiListViewAdapter adapter;
+    PullToRefreshListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_er_ji);
-        initDatas();
+        setContentView(R.layout.activity_sanji_table);
+        init();
         initView();
     }
 
-    private void initDatas() {
-        listErji = new ArrayList<>();
+    private void initView() {
+        TextView textView_back = (TextView) findViewById(R.id.textView_goBack);
+        textView_back.setClickable(true);
+        textView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                /*Intent intent = new Intent(getBaseContext(),ErJiTableActivity.class);
+                startActivity(intent);*/
+            }
+        });
+        TextView textView_title = (TextView) findViewById(R.id.textView_head_title);
+        textView_title.setText(erjiEntity.name);
+
+        listView = (PullToRefreshListView) findViewById(R.id.listView_sanji);
+        adapter = new SanjiListViewAdapter(list);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("----点击位置:"+position);
+                Intent intent = new Intent(getBaseContext(), WebViewActivity.class);
+                intent.putExtra("web", list.get(position-1));
+                startActivity(intent);
+            }
+        });
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                list.clear();
+                getData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+            }
+        });
+
+
+    }
+
+    private void init() {
+        list = new ArrayList<>();
         Intent intent = getIntent();
-        result = (ResultCode) intent.getSerializableExtra("resultCode");
-        // System.out.println("----传递过来:" + result.catName + "------" + result.catId);
-        //获取json
-       getData();
+        erjiEntity = (ErJiLiebiao) intent.getSerializableExtra("Erjitable");
+        System.out.println("----二级列表;" + erjiEntity.id);
+        getData();
 
     }
 
@@ -67,16 +108,15 @@ public class ErJiTableActivity extends BaseActivity {
         }
     }
 
-
     private void getLieBiao() {
         RequestParams params = new RequestParams(Contact.serviceUrl);
         params.addBodyParameter("className", "CatalogService");
         params.addBodyParameter("methodName", "getChildElements");
-        params.addBodyParameter("params", "[\"" + result.catId + "\"]");
+        params.addBodyParameter("params", "[\"" + erjiEntity.id + "\"]");
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("----二级列表数据:" + result);
+                //System.out.println("----san级列表数据:" + result);
                 JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
                 JSONArray arr = JSON.parseArray(root);
@@ -84,61 +124,17 @@ public class ErJiTableActivity extends BaseActivity {
                     ErJiLiebiao n = JSON.parseObject(arr.get(i).toString(), ErJiLiebiao.class);
                     System.out.println("----json:" + n.name);
                     if(n.showOnPhone.equals("true")){
-                        listErji.add(n);
+                        list.add(n);
                     }
-
                 }
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();
                 }
-                listViewErji.onRefreshComplete();
-
+                listView.onRefreshComplete();
             }
-
         });
     }
 
-    private void initView() {
-        TextView textView_title = (TextView) findViewById(R.id.textView_title);
-        textView_title.setText(result.catName);
-        listViewErji = (PullToRefreshListView) findViewById(R.id.listView_erji);
-        adapter = new ErJiListViewAdapter(listErji);
-        listViewErji.setAdapter(adapter);
-        listViewErji.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
 
-                listErji.clear();
-                getData();
-
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-
-            }
-        });
-        listViewErji.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                System.out.println("------二级点击位置:"+position);
-                if (listErji.get(position-1).hasChild == true) {
-                    Intent intent = new Intent(getBaseContext(), SanjiTableActivity.class);
-                    intent.putExtra("Erjitable", listErji.get(position-1));
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getBaseContext(), WebViewActivity.class);
-                    intent.putExtra("web", listErji.get(position-1));
-                    startActivity(intent);
-                }
-            }
-        });
-
-    }
-
-    public void goBack(View view) {
-        Intent intent = new Intent(this, WorkeActivity.class);
-        startActivity(intent);
-    }
 }
+
