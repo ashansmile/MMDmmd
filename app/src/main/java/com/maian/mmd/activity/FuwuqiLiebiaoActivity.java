@@ -93,15 +93,7 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
         }
     }
 
-    private void insertDB(PersonService service) {
-        DbManager db = x.getDb(HDbManager.getServiceDB());
-        try {
-            db.save(service);
 
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void initListService() {
         final ListView listView_service = (ListView) findViewById(R.id.listView_service);
@@ -159,7 +151,6 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
                         && serviceDuankou != null && !" ".equals(serviceDuankou) ) {
                     popupWindow.dismiss();
                     judgeNameSame(serviceName);
-                    //"http://gzmian.com:5465/mmd/vision/RMIServlet"
                     String url = "http://"+serviceAdress+":"+serviceDuankou+"/mmd/vision/RMIServlet";
                     PersonService service = new PersonService(serviceName,serviceAdress,serviceDuankou, url);
                     insertDB(service);
@@ -172,8 +163,6 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
 
             }
         });
-
-
     }
 
     private void initHead() {
@@ -242,6 +231,16 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
         return super.onContextItemSelected(item);
     }
 
+    private void insertDB(PersonService service) {
+        DbManager db = x.getDb(HDbManager.getServiceDB());
+        try {
+            db.save(service);
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void delectDB(PersonService service){
         DbManager db = x.getDb(HDbManager.getServiceDB());
         try {
@@ -255,8 +254,9 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
     private void judgeNameSame(String name){
         for (int i = 0; i < list_service.size(); i++) {
             if (name.equals(list_service.get(i).serviceName)){
-                list_service.remove(i);
                 delectDB(list_service.get(i));
+                list_service.remove(i);
+
             }
         }
     }

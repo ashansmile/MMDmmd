@@ -43,7 +43,6 @@
         <activity android:name=".activity.GuanyuActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.FuwuqiBianjiActivity"></activity>
     </application>
 
 </manifest>

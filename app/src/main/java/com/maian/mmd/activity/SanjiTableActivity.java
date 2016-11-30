@@ -95,6 +95,7 @@ public class SanjiTableActivity extends BaseActivity {
     }
 
     private void getData() {
+        Login.tongZhiPhone();
         if (Login.isLogin(MMDApplication.user.name)){
             getLieBiao();
         }else {

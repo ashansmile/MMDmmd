@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.maian.mmd.R;
+import com.maian.mmd.base.BaseActivity;
 
-public class GuanyuActivity extends AppCompatActivity {
+public class GuanyuActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

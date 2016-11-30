@@ -35,4 +35,18 @@ public class HDbManager extends DbManager.DaoConfig {
                 });*/
         return daoConfig;
     }
+
+    public static DbManager.DaoConfig getUserDB(){
+        DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
+                .setDbName("user_db")
+                .setDbVersion(1)
+                .setAllowTransaction(true);
+                /*.setTableCreateListener(new DbManager.TableCreateListener() {
+                    @Override
+                    public void onTableCreated(DbManager db, TableEntity<?> table) {
+
+                    }
+                });*/
+        return daoConfig;
+    }
 }

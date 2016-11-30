@@ -5,6 +5,8 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +29,7 @@ import org.xutils.x;
 public class WebViewActivity extends AppCompatActivity {
     ErJiLiebiao entity;
     WebView webView;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,22 +71,38 @@ public class WebViewActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setJavaScriptEnabled(true);
+
+        webSettings.setAllowFileAccess(true);
+        //如果访问的页面中有Javascript，则webview必须设置支持Javascript
+        webSettings.setJavaScriptEnabled(true);
+        //webSettings.setUserAgentString(MMDApplication.getUserAgent());
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient());
+        CookieSyncManager.createInstance(this);
+        CookieManager cookieManager = CookieManager.getInstance();
+        url = Contact.getwebUrl(entity.id, MMDApplication.user.name,
+                MMDApplication.user.pwd);
+//        cookieManager.setCookie(url, cookieString);
+//        CookieSyncManager.getInstance().sync();
+
         getwebUrl();
 
     }
 
     private void getwebUrl() {
+        Login.tongZhiPhone();
         if (Login.isLogin(MMDApplication.user.name)) {
-            webView.loadUrl(Contact.getwebUrl(entity.id, MMDApplication.user.name,
-                    MMDApplication.user.pwd));
+            webView.loadUrl(url);
         } else {
             x.http().post(Login.loginParms(MMDApplication.user.name, MMDApplication.user.pwd), new xutilsCallBack<String>() {
                         @Override
                         public void onSuccess(String result) {
-                            webView.loadUrl(Contact.getwebUrl(entity.id, MMDApplication.user.name,
-                                    MMDApplication.user.pwd));
+                            webView.loadUrl(url);
                         }
                     }
             );
