@@ -17,6 +17,7 @@ import java.util.List;
  * Created by Administrator on 2016/11/14.
  */
 public class MMDApplication extends Application {
+    public static int ISFIRSTUSE = 0;
     public static String cookie=null;
     public static com.maian.mmd.entity.User user;
     public static PersonService service = null;

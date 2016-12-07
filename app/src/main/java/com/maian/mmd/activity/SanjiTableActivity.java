@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -21,6 +24,7 @@ import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.ErJiLiebiao;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.Login;
+import com.maian.mmd.utils.NetworkMonitor;
 import com.maian.mmd.utils.xutilsCallBack;
 
 import org.xutils.http.RequestParams;
@@ -30,16 +34,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SanjiTableActivity extends BaseActivity {
-    ErJiLiebiao erjiEntity;
-    List<ErJiLiebiao> list;
-    SanjiListViewAdapter adapter;
-    PullToRefreshListView listView;
+    private ErJiLiebiao erjiEntity;
+    private List<ErJiLiebiao> list;
+    private SanjiListViewAdapter adapter;
+    private PullToRefreshListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sanji_table);
-        init();
+        list = new ArrayList<>();
+        Intent intent = getIntent();
+        erjiEntity = (ErJiLiebiao) intent.getSerializableExtra("Erjitable");
+        judgeNet();
         initView();
     }
 
@@ -58,12 +65,21 @@ public class SanjiTableActivity extends BaseActivity {
         textView_title.setText(erjiEntity.name);
 
         listView = (PullToRefreshListView) findViewById(R.id.listView_sanji);
-        adapter = new SanjiListViewAdapter(list);
+
+
+        //空视图
+        ViewGroup emptyView=(ViewGroup) View.inflate(this, R.layout.item_empity, null);
+        emptyView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
+        emptyView.setVisibility(View.GONE);
+        ((ViewGroup)listView.getParent()).addView(emptyView);
+        listView.setEmptyView(emptyView);
+
+
+        adapter = new SanjiListViewAdapter(list,this);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("----点击位置:"+position);
                 Intent intent = new Intent(getBaseContext(), WebViewActivity.class);
                 intent.putExtra("web", list.get(position-1));
                 startActivity(intent);
@@ -73,7 +89,7 @@ public class SanjiTableActivity extends BaseActivity {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 list.clear();
-                getData();
+                judgeNet();
             }
 
             @Override
@@ -85,12 +101,14 @@ public class SanjiTableActivity extends BaseActivity {
 
     }
 
-    private void init() {
-        list = new ArrayList<>();
-        Intent intent = getIntent();
-        erjiEntity = (ErJiLiebiao) intent.getSerializableExtra("Erjitable");
-        System.out.println("----二级列表;" + erjiEntity.id);
-        getData();
+    private void judgeNet() {
+
+        if(NetworkMonitor.isNetworkAvailable(this)){
+            //获取json
+            getData();
+        }else {
+            Toast.makeText(this, "当前网络未连接", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -117,13 +135,12 @@ public class SanjiTableActivity extends BaseActivity {
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                //System.out.println("----san级列表数据:" + result);
+                System.out.println("----"+result);
                 JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
                 JSONArray arr = JSON.parseArray(root);
                 for (int i = 0; i < arr.size(); i++) {
                     ErJiLiebiao n = JSON.parseObject(arr.get(i).toString(), ErJiLiebiao.class);
-                    System.out.println("----json:" + n.name);
                     if(n.showOnPhone.equals("true")){
                         list.add(n);
                     }

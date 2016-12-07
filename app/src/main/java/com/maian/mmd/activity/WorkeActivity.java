@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.maian.mmd.utils.Login;
 import com.maian.mmd.utils.xutilsCallBack;
 import com.maian.mmd.view.CarouselView;
 
+import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -44,12 +47,11 @@ public class WorkeActivity extends BaseActivity {
     private PullToRefreshGridView gridView;
     private GridViewAdapter grildAdapter;
     private TextView textView_name;
-
+    private TextView textView_marquee;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worke);
-
         initgridlViewdata();
         initHead();
         initViewPager();
@@ -88,7 +90,6 @@ public class WorkeActivity extends BaseActivity {
         DbManager db = x.getDb(HDbManager.getZhuYeDb());
         try {
             grildList = db.selector(ResultCode.class).findAll();
-            //System.out.println( "-----list:"+list.size());
             if (grildList == null) {
                 grildList = new ArrayList<>();
             }
@@ -106,13 +107,11 @@ public class WorkeActivity extends BaseActivity {
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("----mainXinxi:" + result);
                 com.alibaba.fastjson.JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
                 JSONArray arr = JSON.parseArray(root);
                 for (int i = 0; i < arr.size(); i++) {
                     ResultCode n = JSON.parseObject(arr.get(i).toString(), ResultCode.class);
-                    System.out.println("----json:" + n.catName);
                     grildList.add(n);
                 }
 
@@ -127,16 +126,16 @@ public class WorkeActivity extends BaseActivity {
                     grildAdapter.notifyDataSetChanged();
                 }
                 gridView.onRefreshComplete();
-
             }
         });
     }
 
     private void initUserName() {
-        textView_name.setText(MMDApplication.user.name);
+        textView_name.setText("用户名："+MMDApplication.user.name);
     }
 
     private void initHead() {
+        getMarquee();
         leftLinearLayout = (LinearLayout) findViewById(R.id.linearLayout_left);
         ImageView imgShouchang = (ImageView) findViewById(R.id.img_shouchang);
         imgShouchang.setClickable(true);
@@ -147,18 +146,28 @@ public class WorkeActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        textView_marquee = (TextView) findViewById(R.id.textView_marquee);
+
     }
 
 
     private void initGrildView() {
         gridView = (PullToRefreshGridView) findViewById(R.id.refreshGridView);
-        grildAdapter = new GridViewAdapter(grildList);
+        //空视图
+        ViewGroup emptyView=(ViewGroup) View.inflate(this, R.layout.item_empity, null);
+        emptyView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
+        emptyView.setVisibility(View.GONE);
+        ((ViewGroup)gridView.getParent()).addView(emptyView);
+        gridView.setEmptyView(emptyView);
+
+
+        grildAdapter = new GridViewAdapter(grildList,this);
         gridView.setAdapter(grildAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseContext(), ErJiTableActivity.class);
-                System.out.println("----grildView:" + position);
                 intent.putExtra("resultCode", grildList.get(position));
                 startActivity(intent);
 
@@ -269,6 +278,20 @@ public class WorkeActivity extends BaseActivity {
         });
     }
 
+    private void getMarquee(){
+        RequestParams params = new RequestParams(serviceUrl);
+        params.addBodyParameter("className", "mobilePortalModule");
+        params.addBodyParameter("params", "[]");
+        params.addBodyParameter("methodName", "getMarquee");
+        x.http().post(params,new xutilsCallBack<String>(){
+            @Override
+            public void onSuccess(String result) {
+                com.alibaba.fastjson.JSONObject root = JSON.parseObject(result);
+                String marquee = root.getString("result");
+                textView_marquee.setText(marquee);
+            }
+        });
+    }
     private void saveSouyeDB() {
         DbManager db = x.getDb(HDbManager.getZhuYeDb());
         if (grildList != null) {

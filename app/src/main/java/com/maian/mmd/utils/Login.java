@@ -27,7 +27,6 @@ public class Login {
     public static List<ResultCode> list;
     public static Boolean isLoginSucess = false;
     public static Boolean isOnline = false;
-    public static int loginCount = 0;
 
     //登录
     public static Boolean login(final String username, final String password, final Activity activity) {
@@ -40,7 +39,6 @@ public class Login {
         x.http().post(requestParams, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("------" + result);
                 try {
                     JSONObject jsonLogin = new JSONObject(result);
                     String loginResult = jsonLogin.getString("result");
@@ -81,7 +79,6 @@ public class Login {
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("----isLogin:" + result);
                 JSONObject jsonLogin = null;
                 try {
                     jsonLogin = new JSONObject(result);
@@ -89,7 +86,6 @@ public class Login {
                     if ("true".equals(loginResult)) {
                         isOnline = true;
                     }
-                    System.out.println("---loginIslogin" + loginResult);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -107,29 +103,16 @@ public class Login {
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                //System.out.println("----isphone:" + result);
             }
         });
     }
 
-    public static boolean wanChengLogin(Activity activity) {
-        boolean isSucess = true;
-        if (!isLogin(MMDApplication.user.name)) {
-            if (login(MMDApplication.user.name, MMDApplication.user.pwd, activity)) {
-                Toast.makeText(activity, "网络繁忙,请稍候重试", Toast.LENGTH_SHORT).show();
-                isSucess = false;
-            } else isSucess = true;
-        }
-        return isSucess;
-    }
-
-    public static RequestParams loginParms(final String username, final String password){
-        System.out.println("----访问地址:" + Contact.serviceUrl);
+    public static RequestParams loginParms(final String username, final String password) {
         RequestParams requestParams = new RequestParams(Contact.serviceUrl);
         requestParams.addBodyParameter("className", "UserService");
         requestParams.addBodyParameter("methodName", "login");
         requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        return  requestParams;
+        return requestParams;
     }
 
 }

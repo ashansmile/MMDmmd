@@ -11,6 +11,7 @@ public class ErJiLiebiao implements Serializable {
     public String name;
     public String showOnPhone;
     public Boolean hasChild;
+    public String customMobileImage;
 
     public ErJiLiebiao() {
     }
@@ -20,5 +21,13 @@ public class ErJiLiebiao implements Serializable {
         this.name = name;
         this.showOnPhone = showOnPhone;
         this.hasChild = hasChild;
+    }
+
+    public ErJiLiebiao(String id, String name, String showOnPhone, Boolean hasChild, String customMobileImage) {
+        this.id = id;
+        this.name = name;
+        this.showOnPhone = showOnPhone;
+        this.hasChild = hasChild;
+        this.customMobileImage = customMobileImage;
     }
 }

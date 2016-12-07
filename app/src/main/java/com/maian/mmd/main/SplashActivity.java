@@ -39,9 +39,8 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        //init();
-        judgeNet();
         //judgeIsLogin();
+        judgeIsGUide();
     }
 
     //优先查找本地是否登录过
@@ -50,24 +49,41 @@ public class SplashActivity extends BaseActivity {
         String szImei = TelephonyMgr.getDeviceId();
         System.out.println("----device" + szImei);
     }
+    private void judgeIsGUide() {
+        SharedPreferences sp=getSharedPreferences("args", Context.MODE_PRIVATE);
+        boolean isGuide=sp.getBoolean("isGuid",false);
+        if(isGuide){
+            judgeNet();
+        }else{
+            MMDApplication.ISFIRSTUSE = 1;
+            intent=new Intent(this,NavationActivity.class);
+        }
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    startActivity(intent);
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
+
+
+    }
 
     Intent intent = null;
 
     private void init() {
-       /* SharedPreferences sp=getSharedPreferences("args", Context.MODE_PRIVATE);
-        boolean isGuide=sp.getBoolean("isGuid",false);
-        if(isGuide){
-            intent=new Intent(this,WorkeActivity.class);
-        }else{
-            intent=new Intent(this,NavationActivity.class);
-        }*/
         intent = new Intent(this, LoginActivity.class);
         new Thread() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2500);
+                    Thread.sleep(2000);
                     startActivity(intent);
 
                 } catch (Exception e) {
@@ -104,7 +120,6 @@ public class SplashActivity extends BaseActivity {
         pwd = list.get(list.size() - 1).pwd;
         url = list.get(list.size() - 1).inServiceUrl;
         Contact.serviceUrl = url;
-        System.out.println("----"+name+pwd+url);
         x.http().post(Login.loginParms(name, pwd), new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
@@ -117,19 +132,11 @@ public class SplashActivity extends BaseActivity {
                         startActivity(intent);
                         DbCookieStore instance = DbCookieStore.INSTANCE;
                         List<HttpCookie> cookies = instance.getCookies();
-                        System.out.println("----cookie:" + cookies.size());
-                        for (int i = 0; i < cookies.size(); i++) {
-                            String domain = cookies.get(i).getDomain();
-                            System.out.println("----domain:" + domain);
-                        }
-
 
                     } else if ("false".equals(loginResult)) {
-                        Toast.makeText(getBaseContext(), "用户名或密码错误", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getBaseContext(), "服务器配置出错,", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                         startActivity(intent);
                     }
@@ -143,8 +150,6 @@ public class SplashActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
 
                 super.onError(ex, isOnCallback);
-                Toast.makeText(getBaseContext(), "网络连接错误", Toast.LENGTH_SHORT).show();
-                System.out.println("----登录出错了");
                 Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(intent);
             }

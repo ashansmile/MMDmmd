@@ -24,8 +24,9 @@ public class GuanyuActivity extends BaseActivity {
         text_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),WorkeActivity.class);
-                startActivity(intent);
+                finish();
+                /*Intent intent = new Intent(getBaseContext(),WorkeActivity.class);
+                startActivity(intent);*/
             }
         });
     }

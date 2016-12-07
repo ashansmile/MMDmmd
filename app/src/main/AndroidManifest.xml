@@ -13,10 +13,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".base.BaseActivity" />
-        <activity
-            android:name=".activity.WorkeActivity"
-            android:launchMode="singleTop" />
+        <activity android:name=".base.BaseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".activity.WorkeActivity" />
         <activity android:name=".main.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

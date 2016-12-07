@@ -11,15 +11,37 @@
 
         <include layout="@layout/head_view" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b2ddf1">
+            <TextView
+                android:id="@+id/textView_marquee"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
         <com.maian.mmd.view.CarouselView
             android:id="@+id/lunbo"
             android:layout_width="match_parent"
-            android:layout_height="250dp"></com.maian.mmd.view.CarouselView>
+            android:layout_height="0dp"
+            android:layout_weight="9"></com.maian.mmd.view.CarouselView>
 
         <com.handmark.pulltorefresh.library.PullToRefreshGridView
             android:id="@+id/refreshGridView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="16"
             android:background="@drawable/item_gridview"
             android:numColumns="4"></com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
@@ -31,6 +53,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical">
+
         <include layout="@layout/left_drawa" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

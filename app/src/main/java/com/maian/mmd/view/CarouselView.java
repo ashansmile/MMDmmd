@@ -98,7 +98,7 @@ public class CarouselView extends FrameLayout implements ViewPager.OnPageChangeL
                 view.setLayoutParams(params);
             }
             //???
-            view.setBackgroundResource(R.drawable.acc_camera);
+            view.setBackgroundResource(R.drawable.dot_true);
             carouselLayout.addView(view);
         }
         viewPager.setAdapter(new ViewPagerAdapter());

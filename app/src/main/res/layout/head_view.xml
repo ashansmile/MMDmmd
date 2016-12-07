@@ -10,22 +10,28 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"/>-->
+        android:src="@mipmap/ic_logo"/>-->
+    <TextView
+
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"/>
     <TextView
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_weight="7"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textColor="@android:color/white"
-        android:text="数据分析"/>
+        android:text="迈安云"/>
     <ImageView
         android:id="@+id/img_shouchang"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="15dp"
         android:src="@drawable/shouchang"
+        android:layout_marginRight="5dp"
         android:layout_weight="1"/>
 
 

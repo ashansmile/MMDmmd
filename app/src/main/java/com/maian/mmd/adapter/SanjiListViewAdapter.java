@@ -1,5 +1,6 @@
 package com.maian.mmd.adapter;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +9,11 @@ import android.widget.TextView;
 
 import com.maian.mmd.R;
 import com.maian.mmd.entity.ErJiLiebiao;
+import com.maian.mmd.utils.ScreenHelper;
+
+import org.xutils.common.util.DensityUtil;
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 import java.util.List;
 
@@ -16,10 +22,12 @@ import java.util.List;
  */
 
 public class SanjiListViewAdapter extends BaseAdapter {
-    List<ErJiLiebiao> listText;
+    private List<ErJiLiebiao> listText;
+    private Activity activity;
 
-    public SanjiListViewAdapter(List<ErJiLiebiao> listText) {
+    public SanjiListViewAdapter(List<ErJiLiebiao> listText,Activity activity) {
         this.listText = listText;
+        this.activity = activity;
     }
 
     @Override
@@ -49,7 +57,16 @@ public class SanjiListViewAdapter extends BaseAdapter {
         }else {
             vh = (ViewHolder) convertView.getTag();
         }
+        vh.img_erji.setLayoutParams(ScreenHelper.setItemPix(activity,vh.img_erji));
         vh.textView_title.setText(listText.get(position).name);
+        ImageOptions imageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER)
+                .setRadius(DensityUtil.dip2px(60))
+                .setLoadingDrawableId(R.drawable.icon_big_1)
+                .setFailureDrawableId(R.drawable.icon_big_1)
+                .setCrop(true)
+                .build();
+        x.image().bind(vh.img_erji,listText.get(position).customMobileImage,imageOptions);
         return convertView;
     }
     class ViewHolder{

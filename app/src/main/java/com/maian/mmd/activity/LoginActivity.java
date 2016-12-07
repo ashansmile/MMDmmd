@@ -9,15 +9,11 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maian.mmd.R;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
-import com.maian.mmd.entity.PersonService;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;
@@ -44,20 +40,18 @@ public class LoginActivity extends BaseActivity {
     private Button log = null;
     private CheckBox checkBox = null;
     private ProgressDialog dialog;
-    private String name;
-    private String pwd;
-    private String serviceUrl;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginActivity = this;
+        selectDB();
         initSet();
         initEditText();
-
-
     }
+
 
     private void initSet() {
         ServiceSetView imageView_set = (ServiceSetView) findViewById(R.id.serviceSetView);
@@ -65,7 +59,7 @@ public class LoginActivity extends BaseActivity {
         imageView_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),FuwuqiLiebiaoActivity.class);
+                Intent intent = new Intent(getBaseContext(), FuwuqiLiebiaoActivity.class);
                 startActivity(intent);
             }
         });
@@ -87,29 +81,26 @@ public class LoginActivity extends BaseActivity {
         username.setHint("请输入账号");
         password.setHint("请输入密码");
         password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);//将密码设置为password
-        final SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        username.setText(sharedPreferences.getString("username", ""));
-        password.setText(sharedPreferences.getString("password", ""));
-        if (sharedPreferences.getString("password", "") != "")
+        if (user == null) {
+            user = new User("", "");
+        }
+        if (MMDApplication.ISFIRSTUSE == 1) {
+            username.setText("demo");
+            password.setText("demo");
             checkBox.setChecked(true);
+        } else {
+            username.setText(user.name);
+            password.setText(user.pwd);
+        }
+
+//        username.setText(user.name);
+//        password.setText(user.pwd);
+        if (user.pwd != null && !"".equals(user.pwd)) {
+            checkBox.setChecked(true);
+        }
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkBox.isChecked()) {
-                    String name = username.getText().toString();
-                    String pwd = password.getText().toString();
-                    String serviceUrl = Contact.serviceUrl;
-                    insertDB(new User(name, pwd, serviceUrl));
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("username", username.getText().toString());
-                    editor.putString("password", password.getText().toString());
-                    editor.apply();
-                } else {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("username", username.getText().toString());
-                    editor.putString("password", "");
-                    editor.apply();
-                }
                 judgeNet();
             }
         });
@@ -139,8 +130,14 @@ public class LoginActivity extends BaseActivity {
 
     private void login(final String username, final String password, final Activity activity) {
         final String url = Contact.serviceUrl;
+        User user = new User(username, password, url);
+        caoZhuoDB(username, url);
+        if (checkBox.isChecked()) {
+            insertDB(user);
+        } else {
+            insertDB(new User(username, null, url));
+        }
         RequestParams requestParams = new RequestParams(url);
-        System.out.println("----" + Contact.serviceUrl);
         requestParams.addBodyParameter("className", "UserService");
         requestParams.addBodyParameter("methodName", "login");
         requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
@@ -152,21 +149,14 @@ public class LoginActivity extends BaseActivity {
                     JSONObject jsonLogin = new JSONObject(result);
                     String loginResult = jsonLogin.getString("result");
                     if (loginResult.equals("true")) {
-                        User user = new User(username,password,url);
-                        caoZhuoDB(username,url);
-                        insertDB(user);
+
+
                         Intent intent = new Intent(loginActivity, WorkeActivity.class);
                         startActivity(intent);
                         MMDApplication.user = new User(username, password);
                         DbCookieStore instance = DbCookieStore.INSTANCE;
                         List<HttpCookie> cookies = instance.getCookies();
-                        System.out.println("----cookie:" + cookies.size());
-                        for (int i = 0; i < cookies.size(); i++) {
-                            String domain = cookies.get(i).getDomain();
-                            System.out.println("----domain:" + domain);
-                        }
-
-
+                        // System.out.println("----cookie:" + cookies.size());
                     } else if ("false".equals(loginResult)) {
                         Toast.makeText(activity, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                     } else {
@@ -182,9 +172,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 dialog.dismiss();
-                Toast.makeText(activity, "网络连接错误", Toast.LENGTH_SHORT).show();
-                System.out.println("----登录出错了");
-                super.onError(ex, isOnCallback);
+                Toast.makeText(activity, "请检查服务器设置", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -193,6 +181,24 @@ public class LoginActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    private void selectDB() {
+        DbManager db = x.getDb(HDbManager.getUserDB());
+        try {
+            List<User> list_db = db.selector(User.class).findAll();
+            for (int i = 0; i < list_db.size(); i++) {
+                if (Contact.serviceUrl.equals(list_db.get(i).inServiceUrl)) {
+                    user = list_db.get(i);
+                }
+            }
+            if (user == null) {
+                user = new User("", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     private void insertDB(User user) {
@@ -209,12 +215,12 @@ public class LoginActivity extends BaseActivity {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
             List<User> list_db = db.selector(User.class).findAll();
-            if (list_db.size() > 3){
+            if (list_db.size() > 3) {
                 db.delete(list_db.get(0));
             }
             for (int i = 0; i < list_db.size(); i++) {
                 if (name.equals(list_db.get(i).name)
-                        && serviceUrl.equals(list_db.get(i).inServiceUrl)){
+                        && serviceUrl.equals(list_db.get(i).inServiceUrl)) {
                     db.delete(list_db.get(i));
                 }
             }

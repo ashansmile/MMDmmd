@@ -82,8 +82,8 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
 
     private void getData() {
         list_service = new ArrayList<>();
-        list_service.add(new PersonService("5465","","", "http://gzmian.com:5465/mmd/vision/RMIServlet"));
-        list_service.add(new PersonService("81","192.168.0.13","81", "http://192.168.0.13:81/mmd/vision/RMIServlet"));
+        list_service.add(new PersonService("Demo","","", "http://gzmian.com:5465/mmd/vision/RMIServlet"));
+        //list_service.add(new PersonService("81","192.168.0.13","81", "http://192.168.0.13:81/mmd/vision/RMIServlet"));
         DbManager db = x.getDb(HDbManager.getServiceDB());
         try {
             List<PersonService> list_db = db.selector(PersonService.class).findAll();
@@ -175,7 +175,16 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
             }
         });
 
+
         TextView textView_back = (TextView) findViewById(R.id.textView_back);
+        textView_back.setVisibility(View.GONE);
+        for (int i = 0; i < MMDApplication.activityManagers.size() ; i++) {
+            if (MMDApplication.activityManagers.get(i) instanceof WorkeActivity){
+                textView_back.setVisibility(View.VISIBLE);
+            }
+        }
+
+
         textView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
