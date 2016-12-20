@@ -87,6 +87,7 @@ public class ErJiTableActivity extends BaseActivity {
             public void onSuccess(String result) {
                 JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
+                System.out.println("----result:"+root);
                 JSONArray arr = JSON.parseArray(root);
                 for (int i = 0; i < arr.size(); i++) {
                     ErJiLiebiao n = JSON.parseObject(arr.get(i).toString(), ErJiLiebiao.class);

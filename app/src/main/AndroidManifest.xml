@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:name=".base.MMDApplication"
         android:allowBackup="true"
@@ -13,8 +14,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".base.BaseActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity
+            android:name=".base.BaseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity android:name=".activity.WorkeActivity" />
         <activity android:name=".main.SplashActivity">
             <intent-filter>
@@ -41,7 +43,10 @@
         <activity android:name=".activity.ShouChangActivity" />
         <activity android:name=".activity.GuanyuActivity" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.WebViewActivity" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:hardwareAccelerated="false" />
+        <activity android:name=".activity.CanvasDrawActivity" />
     </application>
 
 </manifest>

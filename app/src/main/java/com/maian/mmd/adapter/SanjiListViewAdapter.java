@@ -58,7 +58,7 @@ public class SanjiListViewAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
         vh.img_erji.setLayoutParams(ScreenHelper.setItemPix(activity,vh.img_erji));
-        vh.textView_title.setText(listText.get(position).name);
+        vh.textView_title.setText(listText.get(position).alias);
         ImageOptions imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER)
                 .setRadius(DensityUtil.dip2px(60))

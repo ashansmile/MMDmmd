@@ -58,6 +58,7 @@ public class GridViewAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
         vh.img.setLayoutParams(ScreenHelper.setgrildViewItemPix(activity,vh.img));
+        vh.text.setLayoutParams(ScreenHelper.setgrildViewItemPix(activity,vh.text));
         vh.text.setText(listText.get(position).catName);
         if (position > 7) {
             vh.img.setImageResource(imgs[position - 8]);

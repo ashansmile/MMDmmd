@@ -135,7 +135,7 @@ public class SanjiTableActivity extends BaseActivity {
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("----"+result);
+                //System.out.println("----"+result);
                 JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
                 JSONArray arr = JSON.parseArray(root);

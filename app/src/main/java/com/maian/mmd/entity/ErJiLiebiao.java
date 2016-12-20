@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class ErJiLiebiao implements Serializable {
     public String id;
     public String name;
+    public String alias;
     public String showOnPhone;
     public Boolean hasChild;
     public String customMobileImage;
@@ -26,6 +27,15 @@ public class ErJiLiebiao implements Serializable {
     public ErJiLiebiao(String id, String name, String showOnPhone, Boolean hasChild, String customMobileImage) {
         this.id = id;
         this.name = name;
+        this.showOnPhone = showOnPhone;
+        this.hasChild = hasChild;
+        this.customMobileImage = customMobileImage;
+    }
+
+    public ErJiLiebiao(String id, String name, String alias, String showOnPhone, Boolean hasChild, String customMobileImage) {
+        this.id = id;
+        this.name = name;
+        this.alias = alias;
         this.showOnPhone = showOnPhone;
         this.hasChild = hasChild;
         this.customMobileImage = customMobileImage;

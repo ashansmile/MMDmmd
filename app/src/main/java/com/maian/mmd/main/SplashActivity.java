@@ -99,6 +99,8 @@ public class SplashActivity extends BaseActivity {
             isLogin();
         } else {
             Toast.makeText(this, "当前没有网络", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
         }
     }
 

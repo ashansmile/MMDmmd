@@ -74,6 +74,7 @@ public class NavationActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        imag[position].setScaleType(ImageView.ScaleType.FIT_XY);
         if (position == current) {
             imag[position].setImageResource(android.R.drawable.presence_online);
         } else {

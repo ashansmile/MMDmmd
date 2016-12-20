@@ -43,6 +43,7 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
     private EditText editText_service_name;
     private EditText editText_service_adress;
     private EditText editText_service_duankou;
+    private EditText editText_service_dirk;
     private TextView textView_service_url;
     private List<PersonService> list_service;
     private ServiceListViewAdapter adapter;
@@ -69,7 +70,7 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String serviceAdress = editText_service_adress.getText().toString();
                 String serviceDuankou = editText_service_duankou.getText().toString();
-                String url = "http://"+serviceAdress+":"+serviceDuankou+"/mmd/vision/RMIServlet";
+                String url = "http://"+serviceAdress+":"+serviceDuankou+"/"+editText_service_dirk.getText().toString();
                 textView_service_url.setText(url);
             }
 
@@ -125,6 +126,7 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
         editText_service_name = (EditText) popupWindow_service.findViewById(R.id.editText_service_name);
         editText_service_adress = (EditText) popupWindow_service.findViewById(R.id.editText_service_adress);
         editText_service_duankou = (EditText) popupWindow_service.findViewById(R.id.editText_service_duankou);
+        editText_service_dirk = (EditText) popupWindow_service.findViewById(R.id.editText_service_dirk);
         textView_service_url = (TextView) popupWindow_service.findViewById(R.id.textView_service_url);
         //改变textView的值
         addEditTextListener(editText_service_adress);
@@ -151,7 +153,9 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
                         && serviceDuankou != null && !" ".equals(serviceDuankou) ) {
                     popupWindow.dismiss();
                     judgeNameSame(serviceName);
-                    String url = "http://"+serviceAdress+":"+serviceDuankou+"/mmd/vision/RMIServlet";
+                    String url = "http://"+serviceAdress+":"+serviceDuankou
+                            +"/"+editText_service_dirk.getText().toString()
+                            +"/vision/RMIServlet";
                     PersonService service = new PersonService(serviceName,serviceAdress,serviceDuankou, url);
                     insertDB(service);
                     list_service.add(service);
@@ -221,9 +225,6 @@ public class FuwuqiLiebiaoActivity extends BaseActivity {
                     addEditTextListener(editText_service_adress);
                     addEditTextListener(editText_service_duankou);
                     break;
-                /*case R.id.share:
-                    Toast.makeText(this, "分享操作", Toast.LENGTH_SHORT).show();
-                    break;*/
                 case R.id.delete:
                     delectDB(list_service.get(lm.position));
                     list_service.remove(lm.position);
