@@ -2,9 +2,6 @@ package com.maian.mmd.utils;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.widget.Toast;
-
-import com.maian.mmd.activity.WebViewActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;

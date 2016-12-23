@@ -6,11 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.maian.mmd.activity.CanvasDrawActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
     <com.maian.mmd.view.HandWrite
         android:id="@+id/handwriteview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/img_close"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/close" />
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/linearlayout_bottom"
         android:layout_width="match_parent"
@@ -24,53 +37,40 @@
             android:clickable="true"
             android:onClick="clickSelect"
             android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bottom_textview"
             android:text="清屏"/>
         <TextView
-            android:id="@+id/textView_black"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:id="@+id/textView_red"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:gravity="center"
             android:clickable="true"
             android:onClick="clickSelect"
-            android:layout_marginLeft="10dp"
-            android:background="@android:color/black"/>
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/bottom_red"/>
+
         <TextView
             android:id="@+id/textView_blue"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:clickable="true"
             android:onClick="clickSelect"
-            android:layout_marginLeft="10dp"
-            android:background="#436EEE"/>
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/bottom_blue"/>
         <TextView
-            android:id="@+id/textView_red"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:id="@+id/textView_black"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:gravity="center"
             android:clickable="true"
             android:onClick="clickSelect"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/holo_red_light"/>
-        <!--<TextView
-            android:id="@+id/textView_color"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:onClick="clickSelect"
-            android:text="顏色"/>-->
-       <!-- <TextView
-            android:id="@+id/textView_paint"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:onClick="clickSelect"
-            android:drawableLeft="@drawable/bottom_paint"
-            android:drawablePadding="15dp"
-            android:text="画笔"/>-->
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/bottom_black"/>
+
+
         <TextView
             android:id="@+id/textViewtView_share"
             android:layout_width="0dp"
@@ -78,6 +78,8 @@
             android:layout_weight="3"
             android:clickable="true"
             android:onClick="clickSelect"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bottom_textview"
             android:gravity="center"
             android:text="分享"/>
     </LinearLayout>

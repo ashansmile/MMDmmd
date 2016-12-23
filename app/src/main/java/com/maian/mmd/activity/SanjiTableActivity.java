@@ -1,7 +1,6 @@
 package com.maian.mmd.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.maian.mmd.R;
-import com.maian.mmd.adapter.ErJiListViewAdapter;
 import com.maian.mmd.adapter.SanjiListViewAdapter;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;

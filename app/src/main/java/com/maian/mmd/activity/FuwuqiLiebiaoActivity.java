@@ -2,7 +2,6 @@ package com.maian.mmd.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,7 +25,6 @@ import com.maian.mmd.adapter.ServiceListViewAdapter;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.PersonService;
-import com.maian.mmd.entity.ResultCode;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;
 

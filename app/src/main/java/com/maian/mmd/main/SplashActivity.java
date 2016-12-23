@@ -13,7 +13,6 @@ import com.maian.mmd.activity.NavationActivity;
 import com.maian.mmd.activity.WorkeActivity;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
-import com.maian.mmd.entity.PersonService;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;

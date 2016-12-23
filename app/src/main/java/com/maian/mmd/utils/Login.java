@@ -3,9 +3,6 @@ package com.maian.mmd.utils;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.ResultCode;
 
 import org.json.JSONObject;
@@ -14,7 +11,6 @@ import org.xutils.http.cookie.DbCookieStore;
 import org.xutils.x;
 
 import java.net.HttpCookie;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.maian.mmd.utils.Contact.serviceUrl;

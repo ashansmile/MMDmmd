@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Picture;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -21,13 +23,17 @@ import com.maian.mmd.R;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.ErJiLiebiao;
+import com.maian.mmd.utils.BitmapHandlerUtil;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.Login;
 import com.maian.mmd.utils.NetworkMonitor;
+import com.maian.mmd.utils.ScreenHelper;
 import com.maian.mmd.utils.SdcardUtils;
 import com.maian.mmd.utils.xutilsCallBack;
 
 import org.xutils.x;
+
+import java.io.File;
 
 public class WebViewActivity extends BaseActivity {
     private ErJiLiebiao entity;
@@ -59,6 +65,7 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String imgPath = captureScreen();
+               // String imgPath = GetandSaveCurrentImage();
                 Intent intent = new Intent(getBaseContext(),CanvasDrawActivity.class);
                 intent.putExtra("img",imgPath);
                 startActivity(intent);
@@ -130,9 +137,28 @@ public class WebViewActivity extends BaseActivity {
         Bitmap bmp = Bitmap.createBitmap(snapShot.getWidth(),snapShot.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bmp);
         snapShot.draw(canvas);
+        bmp = BitmapHandlerUtil.zoomImg(bmp,ScreenHelper.getScreenWidth(this),ScreenHelper.getScreenHeight(this)-50);
         String imgPath = SdcardUtils.saveBitmap(bmp);
         return imgPath;
     }
+    /**
+     * 获取和保存当前屏幕的截图
+     */
+    private String  GetandSaveCurrentImage()
+    {
+        Bitmap Bmp = Bitmap.createBitmap( ScreenHelper.getScreenWidth(this), ScreenHelper.getScreenHeight(this), Bitmap.Config.ARGB_8888 );
+        View decorview = this.getWindow().getDecorView();
+        decorview.setDrawingCacheEnabled(true);
+
+        Bmp = decorview.getDrawingCache();
+       // Bmp = BitmapHandlerUtil.cropBitmap(Bmp);
+        String imgPath = SdcardUtils.saveBitmap(Bmp);
+
+        return imgPath;
+
+    }
+
+
 
 
 }

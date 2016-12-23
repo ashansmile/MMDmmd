@@ -1,22 +1,31 @@
 package com.maian.mmd.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.maian.mmd.R;
+import com.maian.mmd.utils.BitmapHandlerUtil;
 import com.maian.mmd.view.HandWrite;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.weixin.handler.UmengWXHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 public class CanvasDrawActivity extends Activity {
     private HandWrite handWrite = null;
@@ -25,15 +34,33 @@ public class CanvasDrawActivity extends Activity {
     private String imgPath;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas_draw);
-
-        handWrite = (HandWrite)findViewById(R.id.handwriteview);
+        init();
         getBitmap();
-        //init();
 
+
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    private void init(){
+        handWrite = (HandWrite) findViewById(R.id.handwriteview);
+        ImageView img_close = (ImageView) findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getBitmap() {
@@ -44,8 +71,8 @@ public class CanvasDrawActivity extends Activity {
     }
 
 
-    public void clickSelect(View view){
-        switch (view.getId()){
+    public void clickSelect(View view) {
+        switch (view.getId()) {
             case R.id.textView_clear:
                 handWrite.clear();
                 break;
@@ -67,6 +94,8 @@ public class CanvasDrawActivity extends Activity {
                 try {
 
                     saveMyBitmap(f, handWrite.new1Bitmap);
+                   // share();
+                    shareSelect();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -77,103 +106,62 @@ public class CanvasDrawActivity extends Activity {
         }
     }
 
+    private void shareSelect() {
 
-    private void setPaint() {
-        Dialog mDialog = new AlertDialog.Builder(CanvasDrawActivity.this)
-                .setTitle("画笔设置")
-                .setSingleChoiceItems(new String[]{"细","中","粗"}, whichStrokeWidth,new DialogInterface.OnClickListener()
-                {
+        UmengWXHandler wxHandler = new UmengWXHandler();
+        wxHandler.setAuthListener(new UMAuthListener() {
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        // TODO Auto-generated method stub
-                        switch(which)
-                        {
-                            case 0:
-                            {
-                                handWrite.strokeWidth = 3.0f;
-                                whichStrokeWidth = 0;
-                                break;
-                            }
-                            case 1:
-                            {
-                                handWrite.strokeWidth = 6.0f;
-                                whichStrokeWidth = 1;
-                                break;
-                            }
-                            case 2:
-                            {
-                                handWrite.strokeWidth = 3.0f;
-                                whichStrokeWidth = 2;
-                                break;
-                            }
-                        }
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener()
-                        {
+            }
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                // TODO Auto-generated method stub
-                                dialog.dismiss();
-                            }
-                        }).create();
-        mDialog.show();
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+
+            }
+        });
+        Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+        bitmap = BitmapHandlerUtil.imageZoom(bitmap);
+
+        new ShareAction(this)
+                //.withFile(new File(imgPath))
+                .withTitle("图片")
+                .withMedia(new UMImage(this,bitmap))
+                //.withTargetUrl("http://gzmian.com")
+                .setDisplayList( SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE)
+                .setCallback(umShareListener).open();
     }
 
-    private void initPaint() {
-        Dialog mDialog = new AlertDialog.Builder(CanvasDrawActivity.this)
-                .setTitle("颜色设置")
-                .setSingleChoiceItems(new String[]{"白色","绿色","红色"}, whichColor, new DialogInterface.OnClickListener()
-                {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        // TODO Auto-generated method stub
-                        switch(which)
-                        {
-                            case 0:
-                            {
-                                //画笔的颜色
-                                handWrite.color = Color.WHITE;
-                                whichColor = 0;
-                                break;
-                            }
-                            case 1:
-                            {
-                                //画笔的颜色
-                                handWrite.color = Color.GREEN;
-                                whichColor = 1;
-                                break;
-                            }
-                            case 2:
-                            {
-                                //画笔的颜色
-                                handWrite.color = Color.RED;
-                                whichColor = 2;
-                                break;
-                            }
-                        }
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener()
-                {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        // TODO Auto-generated method stub
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        mDialog.show();
-    }
 
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            System.out.println("----plat"+platform);
+
+            Toast.makeText(getBaseContext(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(getBaseContext(), platform.toString()+t.toString() + " 分享失败啦", Toast.LENGTH_LONG).show();
+            if (t != null) {
+                System.out.println("----platform"+platform);
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(getBaseContext(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     public void saveMyBitmap(File f, Bitmap mBitmap) throws IOException {
         try {

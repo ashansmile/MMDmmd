@@ -30,7 +30,6 @@ import com.maian.mmd.utils.Login;
 import com.maian.mmd.utils.xutilsCallBack;
 import com.maian.mmd.view.CarouselView;
 
-import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.http.RequestParams;
 import org.xutils.x;

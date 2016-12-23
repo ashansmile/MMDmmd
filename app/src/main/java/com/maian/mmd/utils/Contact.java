@@ -1,7 +1,5 @@
 package com.maian.mmd.utils;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2016/11/17.
  */

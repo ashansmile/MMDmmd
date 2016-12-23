@@ -5,12 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.maian.mmd.activity.LoginActivity;
 import com.maian.mmd.activity.WorkeActivity;
-import com.maian.mmd.utils.HDbManager;
-
-import org.xutils.DbManager;
-import org.xutils.x;
 
 public class BaseActivity extends AppCompatActivity {
     private BaseActivity mActivity;

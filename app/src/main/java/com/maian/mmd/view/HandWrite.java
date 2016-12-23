@@ -1,16 +1,20 @@
 package com.maian.mmd.view;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.maian.mmd.utils.ScreenHelper;
 
 public class HandWrite extends View {
     public Paint paint = null;
@@ -20,25 +24,26 @@ public class HandWrite extends View {
     private float startX = 0,startY = 0;
     private boolean isMove = true;
     private boolean isClear = false;
-    public int color = Color.WHITE;
+    public int color ;
 	public float strokeWidth = 3.0f;
 	public Bitmap new1Bitmap = null;
 
 	public HandWrite(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-		//originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a).copy(Bitmap.Config.ARGB_8888, true);
-		//new1Bitmap = Bitmap.createBitmap(originalBitmap);
 	}
 
 	public void setImgPath(String imgPath){
 		originalBitmap = BitmapFactory.decodeFile(imgPath).copy(Bitmap.Config.ARGB_8888, true);
-		System.out.println("----11");
 		new1Bitmap = Bitmap.createBitmap(originalBitmap);
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
 
-    public void clear(){
+	public void clear(){
     	isClear = true;
     	new2Bitmap = Bitmap.createBitmap(originalBitmap);
     	invalidate();
