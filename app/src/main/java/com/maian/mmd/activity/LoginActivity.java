@@ -73,8 +73,8 @@ public class LoginActivity extends BaseActivity {
     private void initEditText() {
         username = (LoginEditText) findViewById(R.id.username);
         password = (LoginEditText) findViewById(R.id.password);
-        username.setBackground(R.mipmap.username);
-        password.setBackground(R.mipmap.password);
+        username.setBackground(R.drawable.icon_username);
+        password.setBackground(R.drawable.icon_password);
         log = (Button) findViewById(R.id.log);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         username.setHint("请输入账号");
@@ -92,8 +92,6 @@ public class LoginActivity extends BaseActivity {
             password.setText(user.pwd);
         }
 
-//        username.setText(user.name);
-//        password.setText(user.pwd);
         if (user.pwd != null && !"".equals(user.pwd)) {
             checkBox.setChecked(true);
         }
@@ -186,12 +184,13 @@ public class LoginActivity extends BaseActivity {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
             List<User> list_db = db.selector(User.class).findAll();
-            for (int i = 0; i < list_db.size(); i++) {
-                if (Contact.serviceUrl.equals(list_db.get(i).inServiceUrl)) {
-                    user = list_db.get(i);
+            if (list_db != null) {
+                for (int i = 0; i < list_db.size(); i++) {
+                    if (Contact.serviceUrl.equals(list_db.get(i).inServiceUrl)) {
+                        user = list_db.get(i);
+                    }
                 }
-            }
-            if (user == null) {
+            } else {
                 user = new User("", "");
             }
         } catch (Exception e) {
@@ -214,13 +213,15 @@ public class LoginActivity extends BaseActivity {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
             List<User> list_db = db.selector(User.class).findAll();
-            if (list_db.size() > 3) {
-                db.delete(list_db.get(0));
-            }
-            for (int i = 0; i < list_db.size(); i++) {
-                if (name.equals(list_db.get(i).name)
-                        && serviceUrl.equals(list_db.get(i).inServiceUrl)) {
-                    db.delete(list_db.get(i));
+            if (list_db != null) {
+                if (list_db.size() > 3) {
+                    db.delete(list_db.get(0));
+                }
+                for (int i = 0; i < list_db.size(); i++) {
+                    if (name.equals(list_db.get(i).name)
+                            && serviceUrl.equals(list_db.get(i).inServiceUrl)) {
+                        db.delete(list_db.get(i));
+                    }
                 }
             }
         } catch (Exception e) {

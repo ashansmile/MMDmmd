@@ -72,6 +72,7 @@ public class WorkeActivity extends BaseActivity {
     }
 
     private void getData() {
+
         if (!Login.isLogin(MMDApplication.user.name)) {
             x.http().post(Login.loginParms(MMDApplication.user.name, MMDApplication.user.pwd), new xutilsCallBack<String>() {
                         @Override
@@ -134,7 +135,6 @@ public class WorkeActivity extends BaseActivity {
     }
 
     private void initHead() {
-        getMarquee();
         leftLinearLayout = (LinearLayout) findViewById(R.id.linearLayout_left);
         ImageView imgShouchang = (ImageView) findViewById(R.id.img_shouchang);
         imgShouchang.setClickable(true);
@@ -147,6 +147,7 @@ public class WorkeActivity extends BaseActivity {
         });
 
         textView_marquee = (TextView) findViewById(R.id.textView_marquee);
+        getMarquee();
 
     }
 
@@ -278,7 +279,9 @@ public class WorkeActivity extends BaseActivity {
     }
 
     private void getMarquee(){
-        RequestParams params = new RequestParams(serviceUrl);
+        String marquee = "效益，因管理而改变！管理，因我们（MMD）而改变！";
+        textView_marquee.setText(marquee);
+        /*RequestParams params = new RequestParams(serviceUrl);
         params.addBodyParameter("className", "mobilePortalModule");
         params.addBodyParameter("params", "[]");
         params.addBodyParameter("methodName", "getMarquee");
@@ -287,9 +290,11 @@ public class WorkeActivity extends BaseActivity {
             public void onSuccess(String result) {
                 com.alibaba.fastjson.JSONObject root = JSON.parseObject(result);
                 String marquee = root.getString("result");
+                System.out.println("----"+marquee);
+                marquee = "效益，因管理而改变！管理，因我们（MMD）而改变！";
                 textView_marquee.setText(marquee);
             }
-        });
+        });*/
     }
     private void saveSouyeDB() {
         DbManager db = x.getDb(HDbManager.getZhuYeDb());

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_sanji_table"
+    android:id="@+id/activity_push_detial"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.maian.mmd.activity.SanjiTableActivity">
+    tools:context="com.maian.mmd.activity.PushDetialActivity">
 
-    <include layout="@layout/head_liebiao" />
+    <include
+        android:id="@+id/head_view"
+        layout="@layout/head_liebiao" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/listView_sanji"
+    <WebView
+        android:id="@+id/push_webView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="#00000000"
-        android:dividerHeight="0dp" />
-
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
 </LinearLayout>

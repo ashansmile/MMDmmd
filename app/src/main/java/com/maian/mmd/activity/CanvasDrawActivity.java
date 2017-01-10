@@ -145,13 +145,13 @@ public class CanvasDrawActivity extends Activity {
         public void onResult(SHARE_MEDIA platform) {
             System.out.println("----plat"+platform);
 
-            Toast.makeText(getBaseContext(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), " 分享成功", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(getBaseContext(), platform.toString()+t.toString() + " 分享失败啦", Toast.LENGTH_LONG).show();
+           // Toast.makeText(getBaseContext(), platform.toString()+t.toString() + " 分享失败啦", Toast.LENGTH_LONG).show();
             if (t != null) {
                 System.out.println("----platform"+platform);
             }
@@ -159,7 +159,7 @@ public class CanvasDrawActivity extends Activity {
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(getBaseContext(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), " 你取消了分享", Toast.LENGTH_SHORT).show();
         }
     };
 

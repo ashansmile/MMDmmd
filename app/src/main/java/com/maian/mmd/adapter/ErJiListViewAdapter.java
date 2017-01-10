@@ -23,6 +23,10 @@ import java.util.List;
 public class ErJiListViewAdapter extends BaseAdapter {
     private List<ErJiLiebiao> listText;
     private Activity activity;
+    public int[] imgs = {R.drawable.dir1, R.drawable.dir2,
+            R.drawable.dir3, R.drawable.dir4,
+            R.drawable.dir5, R.drawable.dir6,
+            R.drawable.dir7, R.drawable.dir8, R.drawable.dir9};
 
     public ErJiListViewAdapter(List<ErJiLiebiao> listText,Activity activity) {
         this.listText = listText;
@@ -58,17 +62,24 @@ public class ErJiListViewAdapter extends BaseAdapter {
         }
 
         vh.img_erji.setLayoutParams(ScreenHelper.setItemPix(activity,vh.img_erji));
+        if (position > 8) {
+            vh.img_erji.setImageResource(imgs[position - 9]);
+        } else if (position > 16) {
+            vh.img_erji.setImageResource(imgs[0]);
+        } else {
+            vh.img_erji.setImageResource(imgs[position]);
+        }
         vh.textView_title.setText(listText.get(position).alias);
 
-        ImageOptions imageOptions = new ImageOptions.Builder()
+       /* ImageOptions imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER)
                 .setRadius(DensityUtil.dip2px(60))
                 .setLoadingDrawableId(R.drawable.icon_big_2)
                 .setFailureDrawableId(R.drawable.icon_big_2)
                 .setCrop(true)
                 .build();
-        x.image().bind(vh.img_erji,listText.get(position).customMobileImage,imageOptions);
-
+        //x.image().bind(vh.img_erji,listText.get(position).customMobileImage,imageOptions);
+        x.image().bind(vh.img_erji,,imageOptions);*/
         return convertView;
     }
     class ViewHolder{

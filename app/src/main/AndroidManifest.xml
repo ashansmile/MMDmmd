@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.maian.mmd">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
     <!-- 友盟权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -30,10 +31,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+        <!-- 友盟推送 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58589b3f4544cb5daf002ca6" >
-        </meta-data>
+            android:value="58589b3f4544cb5daf002ca6" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="663563f3dfc8ca34ecf138a313f33fd1" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+
         <activity
             android:name=".base.BaseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
@@ -46,6 +55,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.NavationActivity" />
+        <activity android:name=".activity.PushDetialActivity"></activity>
 
         <receiver
             android:name=".utils.NetworkChangeReceiver"
@@ -63,10 +73,13 @@
         <activity android:name=".activity.ShouChangActivity" />
         <activity android:name=".activity.GuanyuActivity" />
         <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.PermissionsActivity" />
         <activity
             android:name=".activity.WebViewActivity"
             android:hardwareAccelerated="false" />
         <activity android:name=".activity.CanvasDrawActivity" />
+
+        <service android:name=".service.MessageService"></service>
 
         <!-- 友盟添加activity -->
 
@@ -97,6 +110,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 
 </manifest>

@@ -51,13 +51,13 @@
     public static final android.os.Parcelable$Creator *;
 }
 
-
+#友盟分享
 -keep class com.tencent.mm.sdk.openapi.WXMediaMessage { ;}
--keep class com.tencent.mm.sdk.openapi.** implements c om.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {;}
+-keep class com.tencent.mm.sdk.openapi.** implements c om.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject { ;}
 
 
 -keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage { ;}
--keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject { ;}
 
 
 -keep class com.tencent.open.TDialog$*
@@ -66,3 +66,33 @@
 -keep class com.tencent.open.PKDialog { ;}
 -keep class com.tencent.open.PKDialog$*
 -keep class com.tencent.open.PKDialog$* {*;}
+
+
+
+
+#友盟推送混淆代码
+-dontwarn com.taobao.**
+-dontwarn anet.channel.**
+-dontwarn anetwork.channel.**
+-dontwarn org.android.**
+-dontwarn org.apache.thrift.**
+-dontwarn com.xiaomi.**
+-dontwarn com.huawei.**
+
+-keepattributes *Annotation*
+
+-keep class com.taobao.** {*;}
+-keep class org.android.** {*;}
+-keep class anet.channel.** {*;}
+-keep class com.umeng.** {*;}
+-keep class com.xiaomi.** {*;}
+-keep class com.huawei.** {*;}
+-keep class org.apache.thrift.** {*;}
+
+-keep class com.alibaba.sdk.android.**{*;}
+-keep class com.ut.**{*;}
+-keep class com.ta.**{*;}
+
+-keep public class **.R$*{
+   public static final int *;
+}

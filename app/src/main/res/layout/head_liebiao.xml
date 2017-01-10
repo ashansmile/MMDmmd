@@ -24,7 +24,6 @@
         android:gravity="center"
         android:maxEms="2"
         android:singleLine="true"
-        android:text="标题"
         android:textColor="@android:color/white"
         android:textSize="17sp" />
     <ImageView
