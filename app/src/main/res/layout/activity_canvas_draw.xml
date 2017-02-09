@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.maian.mmd.activity.CanvasDrawActivity">
+    tools:context="com.maian.mmd.activity.CutImgActivity">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

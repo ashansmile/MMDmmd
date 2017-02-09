@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.maian.mmd.entity.ResultCode;
+import com.maian.mmd.entity.User;
 import com.maian.mmd.service.MessageService;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -21,11 +22,11 @@ import java.util.List;
 public class MMDApplication extends Application {
     public static int ISFIRSTUSE = 0;
     public static String cookie = null;
-    public static com.maian.mmd.entity.User user;
+    public static User user;
     public static List<ResultCode> list_zhuye;
     public static List<Activity> activityManagers;
-    public static String url_push;
-
+    public static boolean fromNet = false;
+    public static boolean isWeb = false;
 
     @Override
     public void onCreate() {
@@ -36,12 +37,11 @@ public class MMDApplication extends Application {
 
 
         initUmeng();
-        initService();
+        //initService();
        // initUmengPush();
     }
 
     private void initService() {
-        System.out.println("----do");
         Intent intent = new Intent(this, MessageService.class);
         startService(intent);
     }

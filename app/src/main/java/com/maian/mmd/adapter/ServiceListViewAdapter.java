@@ -42,17 +42,17 @@ public class ServiceListViewAdapter extends BaseAdapter{
             vh = new ViewHolder();
             convertView = View.inflate(parent.getContext(), R.layout.service_listview_item,null);
             vh.textView_service_name = (TextView) convertView.findViewById(R.id.textView_service_name);
-            vh.getTextView_service_adress = (TextView) convertView.findViewById(R.id.textView_service_adress);
+           // vh.getTextView_service_adress = (TextView) convertView.findViewById(R.id.textView_service_adress);
             convertView.setTag(vh);
         }else {
             vh = (ViewHolder)convertView.getTag();
         }
-        vh.textView_service_name.setText(list.get(position).serviceName);
-        vh.getTextView_service_adress.setText(list.get(position).url);
+        vh.textView_service_name.setText("服务器名："+list.get(position).serviceName);
+        //vh.getTextView_service_adress.setText(list.get(position).url);
         return convertView;
     }
     class ViewHolder{
         TextView textView_service_name;
-        TextView getTextView_service_adress;
+        //TextView getTextView_service_adress;
     }
 }

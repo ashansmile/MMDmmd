@@ -12,8 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.maian.mmd.R;
+import com.maian.mmd.main.SplashActivity;
 import com.maian.mmd.utils.PermissionUtil;
 
 /**
@@ -74,7 +76,7 @@ public class PermissionsActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
     }
 
-    // 全部权限均已获取
+    // 允许时权限处理
     private void allPermissionsGranted() {
         setResult(PERMISSIONS_GRANTED);
         finish();
@@ -96,7 +98,8 @@ public class PermissionsActivity extends AppCompatActivity {
             allPermissionsGranted();
         } else {
             isRequireCheck = false;
-            showMissingPermissionDialog();
+            allPermissionsGranted();
+           // showMissingPermissionDialog();
         }
     }
 

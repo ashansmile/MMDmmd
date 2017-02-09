@@ -1,75 +1,114 @@
 package com.maian.mmd.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.maian.mmd.R;
+import com.maian.mmd.activity.HomeActivity;
 import com.maian.mmd.activity.LoginActivity;
 import com.maian.mmd.activity.NavationActivity;
-import com.maian.mmd.activity.WorkeActivity;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
+import com.maian.mmd.entity.ChildResult;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;
 import com.maian.mmd.utils.Login;
+import com.maian.mmd.utils.NetRequestParamsUtil;
 import com.maian.mmd.utils.NetworkMonitor;
 import com.maian.mmd.utils.xutilsCallBack;
+import com.maian.mmd.utils.xutilsHelper;
 
 import org.json.JSONObject;
 import org.xutils.DbManager;
+import org.xutils.http.RequestParams;
 import org.xutils.http.cookie.DbCookieStore;
 import org.xutils.x;
 
 import java.net.HttpCookie;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SplashActivity extends BaseActivity {
     private String name;
     private String pwd;
     private String url;
+    public  static  boolean isHomeWeb;
+    public static boolean isGrid;
+    private  boolean isGuide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         //judgeIsLogin();
-        judgeIsGUide();
+
     }
 
-    //优先查找本地是否登录过
-    private void judgeIsLogin() {
-        TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        String szImei = TelephonyMgr.getDeviceId();
-        System.out.println("----device" + szImei);
-    }
-    private void judgeIsGUide() {
-        SharedPreferences sp=getSharedPreferences("args", Context.MODE_PRIVATE);
-        boolean isGuide=sp.getBoolean("isGuid",false);
-        if(isGuide){
-            judgeNet();
-        }else{
-            MMDApplication.ISFIRSTUSE = 1;
-            intent=new Intent(this,NavationActivity.class);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }else {
+            judgeIsGUide();
+            initSharedprefrence();
         }
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    startActivity(intent);
+    }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        startActivity(data);
+    }
+
+    private void initSharedprefrence() {
+        MMDApplication.fromNet = getSharedPreferences("isFromNet", Context.MODE_PRIVATE)
+                .getBoolean("isFromNet", false);
+        isHomeWeb = getSharedPreferences("isHomeWeb", Context.MODE_PRIVATE)
+                .getBoolean("isHomeWeb", false);
+        MMDApplication.isWeb = isHomeWeb;
+        isGrid = getSharedPreferences("isGrid", Context.MODE_PRIVATE)
+                .getBoolean("isGrid", false);
+
+    }
+
+
+    private void judgeIsGUide() {
+        SharedPreferences sp = getSharedPreferences("args", Context.MODE_PRIVATE);
+        isGuide= sp.getBoolean("isGuid", false);
+        if (isGuide) {
+            judgeNet();
+        } else {
+
+            MMDApplication.ISFIRSTUSE = 1;
+            intent = new Intent(this, NavationActivity.class);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        startActivity(intent);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
-
-            }
-        }.start();
+            }.start();
+        }
 
 
     }
@@ -98,7 +137,7 @@ public class SplashActivity extends BaseActivity {
             isLogin();
         } else {
             Toast.makeText(this, "当前没有网络", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
@@ -121,18 +160,18 @@ public class SplashActivity extends BaseActivity {
         pwd = list.get(list.size() - 1).pwd;
         url = list.get(list.size() - 1).inServiceUrl;
         Contact.serviceUrl = url;
-        x.http().post(Login.loginParms(name, pwd), new xutilsCallBack<String>() {
+        x.http().post(NetRequestParamsUtil.getLoginParms(url,name,pwd), new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonLogin = new JSONObject(result);
                     String loginResult = jsonLogin.getString("result");
                     if (loginResult.equals("true")) {
-                        MMDApplication.user = new User(name,pwd,url);
-                        Intent intent = new Intent(getBaseContext(), WorkeActivity.class);
+                        MMDApplication.user = new User(name, pwd, url);
+                        Intent intent = new Intent(getBaseContext(), HomeActivity.class);
                         startActivity(intent);
-                        DbCookieStore instance = DbCookieStore.INSTANCE;
-                        List<HttpCookie> cookies = instance.getCookies();
+                       // DbCookieStore instance = DbCookieStore.INSTANCE;
+                       // List<HttpCookie> cookies = instance.getCookies();
 
                     } else if ("false".equals(loginResult)) {
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
@@ -149,8 +188,6 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
-                super.onError(ex, isOnCallback);
                 Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(intent);
             }

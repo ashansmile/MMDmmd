@@ -1,89 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#1E90FF"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#3296ff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_back_guanyu"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/back_icon"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="关于我们"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="35dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/logo" />
 
         <TextView
-            android:id="@+id/textView_back_guanyu"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:clickable="true"
-            android:drawableLeft="@drawable/back_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:textColor="@android:color/white" />
+            android:text="迈安云数据分析系统"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="18sp" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="关于我们"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:text="版本号:1.0.1"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="12sp" />
+
         <TextView
-            android:layout_width="50dp"
-            android:layout_height="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:text="\t\t广州迈安信息科技有限公司是一家从事数据分析服务研究、集数据整理服务咨询、统计分析系统开发、数据整理培训为一体的高科技企业。广州迈安信息科技有限公司自主研发了与数据整理分析有关的产品如：迈安报表管理平台、迈安数据整理工具、迈安元数据管理平台，产品间互相紧密结合、相辅相成形成一套完整的报表系统解决方案。公司目前已广泛服务于能源、制造、电力、房地产等多个行业及政府机构。"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:text="公司相关产品介绍:" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_about_1"
+                style="@style/textViewAbout"
+                android:text="迈安MMD" />
+
+            <TextView
+                android:id="@+id/textView_about_2"
+                style="@style/textViewAbout"
+                android:text="产品体系" />
+
+            <TextView
+                android:id="@+id/textView_about_3"
+                style="@style/textViewAbout"
+                android:text="复杂报表" />
+
+            <TextView
+                android:id="@+id/textView_about_4"
+                style="@style/textViewAbout"
+                android:text="数据整理" />
+
+            <TextView
+                android:id="@+id/textView_about_5"
+                style="@style/textViewAbout"
+                android:text="元数据平台" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="服务使用条款"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:src="@drawable/logo" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="迈安云数据分析系统"
-        android:textColor="@android:color/holo_blue_light"
-        android:textSize="18sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="版本号:1.0.1"
-        android:textColor="@android:color/holo_blue_light"
-        android:textSize="12sp" />
-
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="      广州迈安信息科技有限公司是一家从事数据分析服务研究、集数据整理服务咨询、统计分析系统开发、数据整理培训为一体的高科技企业。广州迈安信息科技有限公司自主研发了与数据整理分析有关的产品如：迈安报表管理平台、迈安数据整理工具、迈安元数据管理平台，产品间互相紧密结合、相辅相成形成一套完整的报表系统解决方案。公司目前已广泛服务于能源、制造、电力、房地产等多个行业及政府机构。" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="服务使用条款"
-        android:layout_marginTop="50dp"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"/>
-</LinearLayout>
+</ScrollView>

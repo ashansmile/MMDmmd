@@ -86,4 +86,6 @@ public class BitmapHandlerUtil {
         return newbm;
     }
 
+
+
 }

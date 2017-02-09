@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.maian.mmd.activity.WebViewActivity">
-    <include android:id="@+id/head_view" layout="@layout/head_liebiao"/>
+    <include android:id="@+id/head_view" layout="@layout/head_title"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

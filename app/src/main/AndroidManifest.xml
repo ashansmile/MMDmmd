@@ -3,8 +3,8 @@
     package="com.maian.mmd">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <!-- 友盟权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -45,17 +45,55 @@
 
         <activity
             android:name=".base.BaseActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".activity.WorkeActivity" />
-        <activity android:name=".main.SplashActivity">
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NavationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PushDetialActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ServiceListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PermissionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="false" />
+        <activity
+            android:name=".activity.CutImgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".base.BaseLevel"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.HomeWebActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".main.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NavationActivity" />
-        <activity android:name=".activity.PushDetialActivity"></activity>
+
+        <service android:name=".service.MessageService" />
 
         <receiver
             android:name=".utils.NetworkChangeReceiver"
@@ -66,20 +104,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".activity.ErJiTableActivity" />
-        <activity android:name=".activity.SanjiTableActivity" />
-        <activity android:name=".activity.FuwuqiLiebiaoActivity" />
-        <activity android:name=".activity.ShouChangActivity" />
-        <activity android:name=".activity.GuanyuActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.PermissionsActivity" />
-        <activity
-            android:name=".activity.WebViewActivity"
-            android:hardwareAccelerated="false" />
-        <activity android:name=".activity.CanvasDrawActivity" />
-
-        <service android:name=".service.MessageService"></service>
 
         <!-- 友盟添加activity -->
 

@@ -3,68 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="15dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:gravity="center_horizontal"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/textView_maian"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:text="迈安信息科技"
-            android:textSize="22sp"
-            android:textStyle="normal" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginLeft="145dp"
-        android:layout_marginStart="145dp"
+        android:layout_height="60dp"
         android:gravity="center"
-        android:text="专业的数据分析"
-         />
+        android:text="登录"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <com.maian.mmd.view.LoginEditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text1"
-        android:layout_marginTop="3dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        ></com.maian.mmd.view.LoginEditText>
+        android:layout_marginTop="3dp"></com.maian.mmd.view.LoginEditText>
 
     <Button
         android:id="@+id/log"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/checkBox"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="28dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
         android:background="@drawable/login_button"
         android:text="登录"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/checkBox"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textColor="@android:color/white" />
 
     <com.maian.mmd.view.LoginEditText
         android:id="@+id/password"
@@ -74,39 +43,43 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="20dp"></com.maian.mmd.view.LoginEditText>
+        android:layout_marginTop="18dp"/>
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="记住密码"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/password"
+        android:layout_alignEnd="@+id/log"
         android:layout_alignRight="@+id/log"
-        android:layout_alignEnd="@+id/log" />
+        android:layout_below="@+id/password"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        style="@style/MyCheckBox"
+        android:textColor="#717070"
+        android:padding="5dp"
+        android:text="记住密码" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_alignTop="@+id/log"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="31dp"
-        android:layout_marginStart="31dp" />
-
+        android:layout_alignTop="@+id/log"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_weight="1" />
+    <!--服务器切换-->
     <com.maian.mmd.view.ServiceSetView
-        android:id="@+id/serviceSetView"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:src="@drawable/set"
-        android:layout_above="@+id/log"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/password"
-        android:layout_marginLeft="26dp"
-        android:layout_marginStart="26dp"
-        />
+     android:id="@+id/serviceSetView"
+     android:layout_width="wrap_content"
+     android:layout_height="30dp"
+     android:src="@drawable/set"
+     android:layout_above="@+id/log"
+     android:layout_marginTop="10dp"
+     android:layout_below="@+id/password"
+     android:layout_marginLeft="26dp"
+     android:layout_marginStart="26dp"
+     />
 
 
 </RelativeLayout>

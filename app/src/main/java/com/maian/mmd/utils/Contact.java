@@ -16,9 +16,13 @@ public class Contact {
 
     //服务器地址
     public static String serviceUrl = "http://gzmian.com:5465/mmd/vision/RMIServlet";
-
     public static String getwebUrl(String id, String userName, String password) {
         String s = StringHelper.jiQuString(serviceUrl) + "openresource.jsp?iPad=true&refresh=true&showtoolbar=false&showPath=false&resid=" + id + "&user=" + userName + "&password=" + password;
+        return s;
+    }
+
+    public static String getImgUrl(String id) {
+        String s = "http://gzmian.com:5465/mmd/vision/UploadImageServlet?type=view&downloadId="+id;
         return s;
     }
 

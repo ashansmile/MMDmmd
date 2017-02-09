@@ -1,15 +1,14 @@
 package com.maian.mmd.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Picture;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -24,21 +23,18 @@ import android.widget.Toast;
 import com.maian.mmd.R;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
-import com.maian.mmd.entity.ErJiLiebiao;
-import com.maian.mmd.utils.BitmapHandlerUtil;
+import com.maian.mmd.entity.ChildResult;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.Login;
+import com.maian.mmd.utils.MyWebViewClient;
 import com.maian.mmd.utils.NetworkMonitor;
-import com.maian.mmd.utils.ScreenHelper;
 import com.maian.mmd.utils.SdcardUtils;
 import com.maian.mmd.utils.xutilsCallBack;
 
 import org.xutils.x;
 
-import java.io.File;
-
 public class WebViewActivity extends BaseActivity {
-    private ErJiLiebiao entity;
+    private ChildResult entity;
     private WebView webView;
     private TextView textView_net;
     private String url;
@@ -52,7 +48,8 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void intiView() {
-        TextView textView_back = (TextView) findViewById(R.id.textView_goBack);
+        ImageView textView_back = (ImageView) findViewById(R.id.img_goBack);
+        textView_back.setVisibility(View.VISIBLE);
         textView_back.setClickable(true);
         textView_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,22 +66,25 @@ public class WebViewActivity extends BaseActivity {
                 jupActivity();
             }
         });
-        TextView textView_title = (TextView) findViewById(R.id.textView_head_title);
+        TextView textView_title = (TextView) findViewById(R.id.textView_head_title1);
         textView_title.setTextSize(14);
         textView_title.setText(entity.alias);
     }
 
     private void jupActivity(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
         String imgPath = captureScreen();
-        // String imgPath = GetandSaveCurrentImage();
-        Intent intent = new Intent(getBaseContext(), CanvasDrawActivity.class);
+        Intent intent = new Intent(getBaseContext(), CutImgActivity.class);
         intent.putExtra("img", imgPath);
         startActivity(intent);
     }
 
     private void init() {
         Intent intent = getIntent();
-        entity = (ErJiLiebiao) intent.getSerializableExtra("web");
+        entity = (ChildResult) intent.getSerializableExtra("web");
         webView = (WebView) findViewById(R.id.webView);
         textView_net = (TextView) findViewById(R.id.textView_net);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -103,30 +103,23 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setAppCacheEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient());
+
+
         CookieSyncManager.createInstance(this);
         CookieManager cookieManager = CookieManager.getInstance();
         url = Contact.getwebUrl(entity.id, MMDApplication.user.name,
                 MMDApplication.user.pwd);
+     //   System.out.println("----"+url);
         getwebUrl();
+        webView.setWebViewClient(new MyWebViewClient(this,webView));
+        webView.setVisibility(View.VISIBLE);
     }
 
     private void getwebUrl() {
         if (NetworkMonitor.isNetworkAvailable(this)) {
             textView_net.setVisibility(View.GONE);
             Login.tongZhiPhone();
-            if (Login.isLogin(MMDApplication.user.name)) {
-                webView.loadUrl(url);
-            } else {
-                x.http().post(Login.loginParms(MMDApplication.user.name, MMDApplication.user.pwd), new xutilsCallBack<String>() {
-                            @Override
-                            public void onSuccess(String result) {
-                                webView.loadUrl(url);
-                            }
-                        }
-                );
-            }
+            webView.loadUrl(url);
         } else {
             Toast.makeText(this, "当前网络未连接", Toast.LENGTH_SHORT).show();
             textView_net.setVisibility(View.VISIBLE);

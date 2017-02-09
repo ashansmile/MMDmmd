@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.maian.mmd.activity.ServiceListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#1E90FF"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textView_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/back_icon"
+            android:clickable="true"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:text="服务器列表  "/>
+        <ImageView
+            android:id="@+id/img_more"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/jiahao"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textColor="#6e6e6e"
+        android:gravity="center"
+        android:text="操作提示:长按编辑服务器"/>
+
+    <ListView
+        android:id="@+id/listView_service"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></ListView>
+
+</LinearLayout>

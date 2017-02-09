@@ -21,50 +21,8 @@ import static com.maian.mmd.utils.Contact.serviceUrl;
 
 public class Login {
     public static List<ResultCode> list;
-    public static Boolean isLoginSucess = false;
     public static Boolean isOnline = false;
 
-    //登录
-    public static Boolean login(final String username, final String password, final Activity activity) {
-        isLoginSucess = true;
-        System.out.println("----访问地址:" + Contact.serviceUrl);
-        RequestParams requestParams = new RequestParams(Contact.serviceUrl);
-        requestParams.addBodyParameter("className", "UserService");
-        requestParams.addBodyParameter("methodName", "login");
-        requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        x.http().post(requestParams, new xutilsCallBack<String>() {
-            @Override
-            public void onSuccess(String result) {
-                try {
-                    JSONObject jsonLogin = new JSONObject(result);
-                    String loginResult = jsonLogin.getString("result");
-                    if (loginResult.equals("true")) {
-                        DbCookieStore instance = DbCookieStore.INSTANCE;
-                        List<HttpCookie> cookies = instance.getCookies();
-                        System.out.println("----cookie:" + cookies.size());
-                        for (HttpCookie cookie : cookies) {
-
-                            String name = cookie.getName();
-                            String value = cookie.getValue();
-                            System.out.println("----name:" + name + ";value:" + value);
-                        }
-
-                        isLoginSucess = true;
-                    } else if ("false".equals(loginResult)) {
-                        isLoginSucess = false;
-                        Toast.makeText(activity, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-                    } else {
-                        isLoginSucess = false;
-                        Toast.makeText(activity, "服务器配置出错,", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        return isLoginSucess;
-    }
 
     public static boolean isLogin(String name) {
         isOnline = false;
@@ -94,7 +52,7 @@ public class Login {
     public static void tongZhiPhone() {
         RequestParams params = new RequestParams(serviceUrl);
         params.addBodyParameter("className", "StateService");
-        params.addBodyParameter("params", "[\"mobileClientType\",\"iPhone\"]");
+        params.addBodyParameter("params", "[\"mobileClientType\",\"iphone\"]");
         params.addBodyParameter("methodName", "setSessionAttribute");
         x.http().post(params, new xutilsCallBack<String>() {
             @Override
@@ -103,12 +61,6 @@ public class Login {
         });
     }
 
-    public static RequestParams loginParms(final String username, final String password) {
-        RequestParams requestParams = new RequestParams(Contact.serviceUrl);
-        requestParams.addBodyParameter("className", "UserService");
-        requestParams.addBodyParameter("methodName", "login");
-        requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        return requestParams;
-    }
+
 
 }

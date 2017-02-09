@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.maian.mmd.R;
-import com.maian.mmd.utils.ConvertUtils;
+import com.maian.mmd.utils.ScreenHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -88,7 +88,7 @@ public class CarouselView extends FrameLayout implements ViewPager.OnPageChangeL
             View view = new View(context);
             if (currentPosition==i){
                 view.setPressed(true);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pageItemWidth + ConvertUtils.dip2px(context,3),pageItemWidth + ConvertUtils.dip2px(context,3));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pageItemWidth + ScreenHelper.dip2px(context,3),pageItemWidth + ScreenHelper.dip2px(context,3));
                 params.setMargins(pageItemWidth, 0, 0, 0);
                 view.setLayoutParams(params);
             }else {
@@ -133,7 +133,7 @@ public class CarouselView extends FrameLayout implements ViewPager.OnPageChangeL
         View view = LayoutInflater.from(context).inflate(R.layout.carousel_layout,null);
         this.viewPager = (ViewPager) view.findViewById(R.id.gallery);
         this.carouselLayout = (LinearLayout)view.findViewById(R.id.CarouselLayoutPage);
-        pageItemWidth = ConvertUtils.dip2px(context,5);
+        pageItemWidth = ScreenHelper.dip2px(context,5);
         this.viewPager.addOnPageChangeListener(this);
         addView(view);
     }
@@ -151,7 +151,7 @@ public class CarouselView extends FrameLayout implements ViewPager.OnPageChangeL
             View view = carouselLayout.getChildAt(i);
             if(position%showCount==i){
                 view.setSelected(true);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pageItemWidth + ConvertUtils.dip2px(context,3),pageItemWidth + ConvertUtils.dip2px(context,3));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pageItemWidth + ScreenHelper.dip2px(context,3),pageItemWidth + ScreenHelper.dip2px(context,3));
                 params.setMargins(pageItemWidth, 0, 0, 0);
                 view.setLayoutParams(params);
             }else {

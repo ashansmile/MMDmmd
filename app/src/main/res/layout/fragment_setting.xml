@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="#d7d7d7" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.maian.mmd.view.CircleImageView
+            android:id="@+id/img_user_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/icon_user" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="当前用户名"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_set_service"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="qebhqhejqeqjdqhdqdhdqdbqhj"
+                android:ellipsize="end"
+                android:maxEms="8"
+                android:singleLine="true"
+                android:textColor="#b8b8b8"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#d7d7d7" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="#efefef" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
+
+
+            <RadioButton
+                android:id="@+id/radioButton_isFromNet"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:button="@null"
+                android:text="网络加载目录图片"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/icon_loading"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/set_selector_isnet"
+                android:layout_marginRight="18dp"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+            <RadioButton
+                android:id="@+id/radioButton_isloadHome"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:button="@null"
+                android:text="加载报表首页"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/icon_loading"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/set_selector_isnet"
+                android:layout_marginRight="18dp"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+            <!--选择屏蔽-->
+            <TextView
+                android:id="@+id/textView_service"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:drawableLeft="@drawable/icon_server"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="服务器选择"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+
+            <TextView
+                android:id="@+id/textView_clearData"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:drawableLeft="@drawable/icon_clear_cache"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="清除缓存"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+            <TextView
+                android:id="@+id/textView_download"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:drawableLeft="@drawable/icon_download"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="离线缓存(未开通)"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+            <TextView
+                android:id="@+id/textView_guanyu"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:drawableLeft="@drawable/icon_about"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="关于"
+                android:textColor="#939393"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:background="#d7d7d7" />
+
+            <TextView
+                android:id="@+id/textView_zhuxiao"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="40dp"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="退出当前账号"
+                android:textColor="#fa7069"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

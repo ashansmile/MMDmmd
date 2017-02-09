@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -12,6 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,9 +58,6 @@ public class PushDetialActivity extends BaseActivity {
         webView = (WebView) findViewById(R.id.push_webView);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setDrawingCacheEnabled(true);
-
-//        webView.setHorizontalScrollBarEnabled(false);//水平不显示
-//        webView.setVerticalScrollBarEnabled(false); //垂直不显示
         if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(
                     WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -74,14 +73,14 @@ public class PushDetialActivity extends BaseActivity {
         webSettings.setDatabaseEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient());
-
+        //加载URL
         webView.loadUrl(url);
 
     }
 
 
     private void initView() {
-        TextView textView_back = (TextView) findViewById(R.id.textView_goBack);
+        ImageView textView_back = (ImageView) findViewById(R.id.img_goBack);
         textView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,46 +88,4 @@ public class PushDetialActivity extends BaseActivity {
             }
         });
     }
-
-    /*private void selectDB() {
-        DbManager db = x.getDb(HDbManager.getUserDB());
-        try {
-            List<User> list_db = db.selector(User.class).findAll();
-            if (list_db.size() != 0) {
-                user = list_db.get(list_db.size() - 1);
-            } else {
-                user = new User("demo", "demo", "http://gzmian.com:5465/mmd/vision/RMIServlet");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
-
-    private void login(final String username, final String password, final String url) {
-
-        RequestParams requestParams = new RequestParams(url);
-        requestParams.addBodyParameter("className", "UserService");
-        requestParams.addBodyParameter("methodName", "login");
-        requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        x.http().post(requestParams, new xutilsCallBack<String>() {
-            @Override
-            public void onSuccess(String result) {
-                System.out.println("------" + result);
-                try {
-                    JSONObject jsonLogin = new JSONObject(result);
-                    String loginResult = jsonLogin.getString("result");
-                    if (loginResult.equals("true")) {
-
-                        Intent intent = new Intent(PushDetialActivity.this, WorkeActivity.class);
-                        startActivity(intent);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }*/
-
 }

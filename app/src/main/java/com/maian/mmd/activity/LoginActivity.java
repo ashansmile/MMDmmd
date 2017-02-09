@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;
+import com.maian.mmd.utils.NetRequestParamsUtil;
 import com.maian.mmd.utils.NetworkMonitor;
 import com.maian.mmd.utils.xutilsCallBack;
 import com.maian.mmd.view.LoginEditText;
@@ -58,17 +60,14 @@ public class LoginActivity extends BaseActivity {
         imageView_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), FuwuqiLiebiaoActivity.class);
+                Intent intent = new Intent(getBaseContext(), ServiceListActivity.class);
                 startActivity(intent);
             }
         });
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+
 
     private void initEditText() {
         username = (LoginEditText) findViewById(R.id.username);
@@ -134,30 +133,28 @@ public class LoginActivity extends BaseActivity {
         } else {
             insertDB(new User(username, null, url));
         }
-        RequestParams requestParams = new RequestParams(url);
-        requestParams.addBodyParameter("className", "UserService");
-        requestParams.addBodyParameter("methodName", "login");
-        requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        x.http().post(requestParams, new xutilsCallBack<String>() {
+        x.http().post(NetRequestParamsUtil.getLoginParms(url,username,password), new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("------" + result);
+               // System.out.println("------" + result);
                 try {
                     JSONObject jsonLogin = new JSONObject(result);
                     String loginResult = jsonLogin.getString("result");
                     if (loginResult.equals("true")) {
+                        if (MMDApplication.ISFIRSTUSE == 1){
+                            getPhoneID();
+                        }
+                        MMDApplication.ISFIRSTUSE = 0;
 
-
-                        Intent intent = new Intent(loginActivity, WorkeActivity.class);
+                        Intent intent = new Intent(loginActivity, HomeActivity.class);
                         startActivity(intent);
                         MMDApplication.user = new User(username, password);
                         DbCookieStore instance = DbCookieStore.INSTANCE;
                         List<HttpCookie> cookies = instance.getCookies();
-                        // System.out.println("----cookie:" + cookies.size());
                     } else if ("false".equals(loginResult)) {
                         Toast.makeText(activity, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(activity, "服务器配置出错,", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "网络繁忙或服务器配置出错,", Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
 
@@ -180,6 +177,7 @@ public class LoginActivity extends BaseActivity {
         finish();
     }
 
+    //从数据库中查找用户密码
     private void selectDB() {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
@@ -198,7 +196,7 @@ public class LoginActivity extends BaseActivity {
 
         }
     }
-
+    //插入数据库
     private void insertDB(User user) {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
@@ -208,7 +206,7 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    //操作让数据库中只有四个用户名密码
     private void caoZhuoDB(String name, String serviceUrl) {
         DbManager db = x.getDb(HDbManager.getUserDB());
         try {
@@ -223,10 +221,36 @@ public class LoginActivity extends BaseActivity {
                         db.delete(list_db.get(i));
                     }
                 }
+            }else{
+                insertDB(new User("demo","demo",serviceUrl));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    //设备ID
+    private void getPhoneID() {
+        TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        String szImei = TelephonyMgr.getDeviceId();
+
+        x.http().post(NetRequestParamsUtil.getphoneParms(Contact.serviceUrl,szImei),
+                new xutilsCallBack<String>(){
+                    @Override
+                    public void onSuccess(String result) {
+                        super.onSuccess(result);
+                        System.out.println("----id"+result);
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        super.onError(ex, isOnCallback);
+                        System.out.println("----err"+ex.toString()+isOnCallback);
+                    }
+                });
+
 
     }
 

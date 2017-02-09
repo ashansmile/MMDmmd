@@ -7,24 +7,35 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.maian.mmd.R;
+import com.maian.mmd.base.MMDApplication;
 import com.maian.mmd.entity.ResultCode;
+import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.ScreenHelper;
 
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
+
 import java.util.List;
+
+import static com.maian.mmd.utils.ScreenHelper.getScreenHeight;
 
 /**
  * Created by Administrator on 2016/11/14.
  */
 public class GridViewAdapter extends BaseAdapter {
     List<ResultCode> listText;
+    String imgUrl;
     private Activity activity;
-    public int[] imgs = {R.drawable.icon_big_1, R.drawable.icon_big_2,
-            R.drawable.icon_big_3, R.drawable.icon_big_4,
-            R.drawable.icon_big_5, R.drawable.icon_big_6,
-            R.drawable.icon_big_7, R.drawable.icon_big_8};
+    public int[] imgs = {R.drawable.icon_1, R.drawable.icon_2,
+            R.drawable.icon_3, R.drawable.icon_4,
+            R.drawable.icon_5, R.drawable.icon_6,
+            R.drawable.icon_7, R.drawable.icon_8,
+            R.drawable.icon_9};
 
-    public GridViewAdapter(List<ResultCode> listText,Activity activity) {
+    public GridViewAdapter(List<ResultCode> listText, Activity activity) {
         this.listText = listText;
         this.activity = activity;
     }
@@ -47,7 +58,6 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
-        int temp = 0;
         if (convertView == null) {
             vh = new ViewHolder();
             convertView = View.inflate(parent.getContext(), R.layout.grildview_item, null);
@@ -57,15 +67,36 @@ public class GridViewAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        vh.img.setLayoutParams(ScreenHelper.setgrildViewItemPix(activity,vh.img));
-        vh.text.setLayoutParams(ScreenHelper.setgrildViewItemPix(activity,vh.text));
+        vh.text.setLayoutParams(ScreenHelper.setgrildViewItemPix(activity, vh.text));
+
+        //网络解析extens
+        ResultCode n = listText.get(position);
+        JSONObject obj = (JSONObject) JSON.parse(n.extended);
+        try {
+            imgUrl = obj.getString("customImageId");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         vh.text.setText(listText.get(position).catName);
-        if (position > 7) {
-            vh.img.setImageResource(imgs[position - 8]);
-        } else if (position > 14) {
-            vh.img.setImageResource(imgs[0]);
+        if (MMDApplication.fromNet) {
+            //网络获取图片处理
+            ImageOptions option = new ImageOptions.Builder()
+                    .setImageScaleType(ImageView.ScaleType.CENTER)
+                    .setLoadingDrawableId(R.drawable.icon_default)
+                    .setFailureDrawableId(R.drawable.icon_default)
+                    .setCircular(true)
+                    .setCrop(true)
+                    .build();
+
+            x.image().bind(vh.img, Contact.getImgUrl(imgUrl), option);
         } else {
-            vh.img.setImageResource(imgs[position]);
+            if (position > 8) {
+                vh.img.setImageResource(imgs[position - 9]);
+            } else if (position > 16) {
+                vh.img.setImageResource(imgs[0]);
+            } else {
+                vh.img.setImageResource(imgs[position]);
+            }
         }
         return convertView;
     }

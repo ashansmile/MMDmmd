@@ -53,18 +53,17 @@ public class NavationActivity extends BaseActivity implements ViewPager.OnPageCh
 
     private void initdata() {
         ImageView image1 = new ImageView(this);
-        image1.setImageResource(R.drawable.guide0);
+        image1.setScaleType(ImageView.ScaleType.FIT_XY);
+        image1.setImageResource(R.mipmap.guide1);
         ImageView image2 = new ImageView(this);
-        image2.setImageResource(R.drawable.guide1);
+        image2.setScaleType(ImageView.ScaleType.FIT_XY);
+        image2.setImageResource(R.mipmap.guide2);
         ImageView image3 = new ImageView(this);
-        image3.setImageResource(R.drawable.guide2);
-        ImageView image4 = new ImageView(this);
-        image4.setImageResource(R.drawable.guide3);
+        image3.setScaleType(ImageView.ScaleType.FIT_XY);
+        image3.setImageResource(R.mipmap.guide3);
         list.add(image1);
         list.add(image2);
         list.add(image3);
-        list.add(image4);
-
     }
 
     int current = 0;
@@ -89,7 +88,7 @@ public class NavationActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
-        if (position == 3) {
+        if (position == 2) {
             button.setVisibility(View.VISIBLE);
         } else {
             button.setVisibility(View.GONE);

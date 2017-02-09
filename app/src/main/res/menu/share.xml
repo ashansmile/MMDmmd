@@ -8,6 +8,10 @@
          android:id="@+id/share"
          android:orderInCategory="100"
          android:title="分享"/>
+    <item
+        android:id="@+id/collect"
+        android:orderInCategory="100"
+        android:title="收藏"/>
 
 
 </menu>

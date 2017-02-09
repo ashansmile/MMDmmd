@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/head_view"
-        layout="@layout/head_liebiao" />
+        layout="@layout/head_title" />
 
     <WebView
         android:id="@+id/push_webView"

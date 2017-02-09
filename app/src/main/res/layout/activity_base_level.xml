@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ptr = "http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/head_title_list" />
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/listView_baseleve"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="0dp"
+        android:background="#ffffff"
+        ptr:ptrDrawable="@drawable/icon_refresh"/>
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        android:id="@+id/gridView_baseleve"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="0dp"
+        android:numColumns="3"
+        android:background="#ffffff"
+        android:visibility="gone"
+        ptr:ptrDrawable="@drawable/icon_refresh"/>
+</FrameLayout>
+
+</LinearLayout>

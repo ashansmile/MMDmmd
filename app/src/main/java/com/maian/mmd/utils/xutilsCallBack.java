@@ -14,7 +14,6 @@ public class xutilsCallBack <String>implements Callback.CommonCallback<String> {
 
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
-        //可以根据公司的需求进行统一的请求网络失败的逻辑处理
     }
 
     @Override
