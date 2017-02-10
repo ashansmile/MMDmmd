@@ -35,6 +35,8 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServiceListActivity extends BaseActivity {
     private PopupWindow popupWindow;
@@ -102,8 +104,9 @@ public class ServiceListActivity extends BaseActivity {
         listView_service.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Contact.serviceUrl = list_service.get(position).url;
+                //Contact.serviceUrl = list_service.get(position).url;
                 Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                intent.putExtra("url",list_service.get(position).url);
                 startActivity(intent);
             }
         });
@@ -149,15 +152,21 @@ public class ServiceListActivity extends BaseActivity {
                 if (serviceName != null && !"".equals(serviceName)
                         && serviceAdress != null && !" ".equals(serviceAdress)
                         && serviceDuankou != null && !" ".equals(serviceDuankou) ) {
-                    popupWindow.dismiss();
+
                     judgeNameSame(serviceName);
                     String url = "http://"+serviceAdress+":"+serviceDuankou
                             +"/"+editText_service_dirk.getText().toString()
                             +"/vision/RMIServlet";
-                    PersonService service = new PersonService(serviceName,serviceAdress,serviceDuankou, url);
-                    insertDB(service);
-                    list_service.add(service);
-                    adapter.notifyDataSetChanged();
+                    if(patternUrl(url)){
+                        popupWindow.dismiss();
+                        PersonService service = new PersonService(serviceName,serviceAdress,serviceDuankou, url);
+                        insertDB(service);
+                        list_service.add(service);
+                        adapter.notifyDataSetChanged();
+                    }else {
+                        Toast.makeText(ServiceListActivity.this, "输入不是网址，请检查修改后提交", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 } else {
                     Toast.makeText(ServiceListActivity.this, "请填写完整后提交", Toast.LENGTH_SHORT).show();
@@ -165,6 +174,16 @@ public class ServiceListActivity extends BaseActivity {
 
             }
         });
+
+    }
+
+    private Boolean patternUrl(String url){
+        Pattern pattern=Pattern.compile("(http://|ftp://|https://|www)(([a-zA-z0-9]|-){1,}\\.){1,}[a-zA-z0-9]{1,}-*");
+        Matcher matcher=pattern.matcher(url);
+        if(matcher.find()){
+           return true;
+        }
+        return false;
     }
 
     private void initHead() {
@@ -190,8 +209,7 @@ public class ServiceListActivity extends BaseActivity {
         textView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

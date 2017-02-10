@@ -42,15 +42,25 @@ public class LoginActivity extends BaseActivity {
     private CheckBox checkBox = null;
     private ProgressDialog dialog;
     private User user;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginActivity = this;
+        getData();
         selectDB();
         initSet();
         initEditText();
+    }
+
+    private void getData() {
+        Intent intent = getIntent();
+        url = intent.getStringExtra("url");
+        if (url == null){
+            url = Contact.serviceUrl;
+        }
     }
 
 
@@ -125,7 +135,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login(final String username, final String password, final Activity activity) {
-        final String url = Contact.serviceUrl;
         User user = new User(username, password, url);
         caoZhuoDB(username, url);
         if (checkBox.isChecked()) {
@@ -141,6 +150,7 @@ public class LoginActivity extends BaseActivity {
                     JSONObject jsonLogin = new JSONObject(result);
                     String loginResult = jsonLogin.getString("result");
                     if (loginResult.equals("true")) {
+                        Contact.serviceUrl = url;
                         if (MMDApplication.ISFIRSTUSE == 1){
                             getPhoneID();
                         }
@@ -241,13 +251,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String result) {
                         super.onSuccess(result);
-                        System.out.println("----id"+result);
-                    }
-
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        super.onError(ex, isOnCallback);
-                        System.out.println("----err"+ex.toString()+isOnCallback);
+                       // System.out.println("----id"+result);
                     }
                 });
 
