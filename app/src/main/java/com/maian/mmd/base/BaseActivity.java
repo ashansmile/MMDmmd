@@ -19,17 +19,15 @@ public class BaseActivity extends AppCompatActivity {
     private BaseActivity mActivity;
     private long mExitTime;
 
-    private static final int REQUEST_CODE = 0; // 请求码
-
-
-    private PermissionUtil mPermissionsChecker; // 权限检测器
+//    private static final int REQUEST_CODE = 0; // 请求码
+//    private PermissionUtil mPermissionsChecker; // 权限检测器
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //注册权限
-        mPermissionsChecker = new PermissionUtil(this);
+       // mPermissionsChecker = new PermissionUtil(this);
         //统计应用启动数据
         //PushAgent.getInstance(this).onAppStart();
         mActivity = this;

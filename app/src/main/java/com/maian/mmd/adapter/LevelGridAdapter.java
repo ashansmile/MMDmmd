@@ -61,9 +61,7 @@ public class LevelGridAdapter extends BaseAdapter {
         } else {
             vh = (LevelGridAdapter.ViewHolder) convertView.getTag();
         }
-        //System.out.println("----imgToken:" + listResult.get(position).customMobileImage);
         vh.textView_title.setText(listResult.get(position).alias);
-        //vh.img_grid.setLayoutParams(ScreenHelper.setItemPix(activity, vh.img_grid));
         if (MMDApplication.fromNet) {
             ImageOptions imageOptions = new ImageOptions.Builder()
                     .setImageScaleType(ImageView.ScaleType.CENTER)

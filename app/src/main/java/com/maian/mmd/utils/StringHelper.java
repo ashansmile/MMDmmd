@@ -1,7 +1,7 @@
 package com.maian.mmd.utils;
 
 /**
- * Created by admin on 2016/11/29.
+ * Created by ashan on 2016/11/29.
  */
 
 public class StringHelper {

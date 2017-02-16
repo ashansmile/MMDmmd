@@ -15,8 +15,8 @@ import com.maian.mmd.base.BaseActivity;
 import java.util.ArrayList;
 
 public class NavationActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    ArrayList<View> list = new ArrayList<View>();
-    ImageView imag[];
+    private ArrayList<View> list = new ArrayList<View>();
+    private ImageView imag[];
     private ImageView button;
     private NavationPagerAdapter adapter;
 

@@ -11,7 +11,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
 /**
- * Created by admin on 2017/1/18.
+ * Created by ashan on 2017/1/18.
  */
 
 public class ShareUtil {
@@ -24,15 +24,13 @@ public class ShareUtil {
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onResult(SHARE_MEDIA platform) {
-           // System.out.println("----plat" + platform);
-
             Toast.makeText(activity, " 分享成功", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            // Toast.makeText(getBaseContext(), platform.toString()+t.toString() + " 分享失败啦", Toast.LENGTH_LONG).show();
+             Toast.makeText(activity, platform.toString()+t.toString() + " 分享失败啦", Toast.LENGTH_LONG).show();
             if (t != null) {
                 //System.out.println("----platform" + platform);
             }

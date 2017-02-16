@@ -8,6 +8,8 @@ import android.widget.Toast;
 import com.maian.mmd.entity.ResultCode;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.service.MessageService;
+import com.maian.mmd.utils.Constant;
+import com.maian.mmd.utils.Contact;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/14.
+ * Created by ashan on 2016/11/14.
  */
 public class MMDApplication extends Application {
     public static int ISFIRSTUSE = 0;
@@ -34,8 +36,6 @@ public class MMDApplication extends Application {
         x.Ext.init(this);
         list_zhuye = new ArrayList<>();
         activityManagers = new ArrayList<>();
-
-
         initUmeng();
         //initService();
        // initUmengPush();
@@ -46,7 +46,6 @@ public class MMDApplication extends Application {
         startService(intent);
     }
 /*
-
     UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
         @Override
         public void dealWithCustomAction(Context context, UMessage msg) {
@@ -60,21 +59,17 @@ public class MMDApplication extends Application {
     private void initUmengPush() {
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setDebugMode(false);
-
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
-
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
                // Toast.makeText(MMDApplication.this, "设备token："+deviceToken, Toast.LENGTH_SHORT).show();
 
             }
-
             @Override
             public void onFailure(String s, String s1) {
-
             }
         });
 
@@ -82,8 +77,8 @@ public class MMDApplication extends Application {
     */
 
     private void initUmeng() {
-        PlatformConfig.setWeixin("wxb6514a83a5cf0d42", "1f584bf3e5d3cad9428a536782730c3a");
-        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setWeixin(Constant.WEIXIN_KEY, Constant.WEIXIN_VALUES);
+        PlatformConfig.setQQZone(Constant.QQ_KEY, Constant.QQ_VALUES);
         UMShareAPI.get(this);
     }
 }

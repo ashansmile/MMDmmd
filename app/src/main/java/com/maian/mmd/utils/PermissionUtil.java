@@ -5,16 +5,10 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 
 /**
- * Created by admin on 2016/12/29.
+ * Created by ashan on 2016/12/29.
  */
 
 public class PermissionUtil {
-
-    /**
-     * 检查权限的工具类
-     * <p/>
-     * Created by wangchenlong on 16/1/26.
-     */
 
         private final Context mContext;
 

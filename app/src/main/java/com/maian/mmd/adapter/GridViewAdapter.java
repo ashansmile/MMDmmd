@@ -26,8 +26,8 @@ import static com.maian.mmd.utils.ScreenHelper.getScreenHeight;
  * Created by Administrator on 2016/11/14.
  */
 public class GridViewAdapter extends BaseAdapter {
-    List<ResultCode> listText;
-    String imgUrl;
+    private List<ResultCode> listText;
+    private String imgUrl;
     private Activity activity;
     public int[] imgs = {R.drawable.icon_1, R.drawable.icon_2,
             R.drawable.icon_3, R.drawable.icon_4,

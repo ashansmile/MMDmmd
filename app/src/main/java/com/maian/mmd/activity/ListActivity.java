@@ -113,12 +113,6 @@ public class ListActivity extends BaseActivity {
             child = list_data.get(lm.position - 1);
         }
         HDbManager.collectForm(child, this, child.id);
-       /* if (child.hasChild == true){
-            HDbManager.collectForm(child,this,child.id);
-        }else {
-            Toast.makeText(this, "该文件是目录不能收藏", Toast.LENGTH_SHORT).show();
-        }*/
-
     }
 
     private void shareMessage() {
@@ -157,10 +151,8 @@ public class ListActivity extends BaseActivity {
         x.http().post(NetRequestParamsUtil.getMenuParms(Contact.serviceUrl, result.catId), new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
-                //  System.out.println("----"+result);
                 JSONObject data = JSON.parseObject(result);
                 String root = data.getString("result");
-                //System.out.println("----result:" + root);
                 JSONArray arr = JSON.parseArray(root);
                 for (int i = 0; i < arr.size(); i++) {
                     ChildResult n = JSON.parseObject(arr.get(i).toString(), ChildResult.class);
@@ -269,11 +261,9 @@ public class ListActivity extends BaseActivity {
 
 
     private void isList() {
-
         refreshListView.setEmptyView(emptyView);
         adapter1 = new LevelListAdapter(list_data, this);
         refreshListView.setAdapter(adapter1);
-
         refreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -288,7 +278,6 @@ public class ListActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
 

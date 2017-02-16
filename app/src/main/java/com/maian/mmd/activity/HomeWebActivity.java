@@ -42,8 +42,6 @@ public class HomeWebActivity extends BaseActivity {
         textView_home_net = (TextView) findViewById(R.id.textView_home_net);
         TextView textView = (TextView) findViewById(R.id.textView_web_title);
         textView.setText(entity.alias);
-
-
         if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(
                     WebSettings.LOAD_CACHE_ELSE_NETWORK);

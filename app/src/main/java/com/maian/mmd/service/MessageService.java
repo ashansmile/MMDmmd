@@ -130,12 +130,6 @@ public class MessageService extends Service {
 
     private void judgeMessage(){
 
-
-
     }
-
-
-
-
 }
 

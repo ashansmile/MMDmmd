@@ -21,8 +21,6 @@ public class  AboutActivity extends BaseActivity {
         initView();
     }
 
-
-
     private void initView() {
         TextView text_back = (TextView) findViewById(R.id.textView_back_guanyu);
         text_back.setClickable(true);
@@ -58,10 +56,5 @@ public class  AboutActivity extends BaseActivity {
         }
         intent.putExtra("web",entity);
         startActivity(intent);
-
     }
-
-
-
-
 }

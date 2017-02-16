@@ -8,36 +8,26 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.maian.mmd.R;
 import com.maian.mmd.activity.HomeActivity;
 import com.maian.mmd.activity.LoginActivity;
 import com.maian.mmd.activity.NavationActivity;
 import com.maian.mmd.base.BaseActivity;
 import com.maian.mmd.base.MMDApplication;
-import com.maian.mmd.entity.ChildResult;
 import com.maian.mmd.entity.User;
 import com.maian.mmd.utils.Contact;
 import com.maian.mmd.utils.HDbManager;
-import com.maian.mmd.utils.Login;
 import com.maian.mmd.utils.NetRequestParamsUtil;
 import com.maian.mmd.utils.NetworkMonitor;
 import com.maian.mmd.utils.xutilsCallBack;
-import com.maian.mmd.utils.xutilsHelper;
 
 import org.json.JSONObject;
 import org.xutils.DbManager;
-import org.xutils.http.RequestParams;
-import org.xutils.http.cookie.DbCookieStore;
 import org.xutils.x;
 
-import java.net.HttpCookie;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class SplashActivity extends BaseActivity {
@@ -52,8 +42,6 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        //judgeIsLogin();
-
     }
 
     @Override
@@ -172,7 +160,6 @@ public class SplashActivity extends BaseActivity {
                         startActivity(intent);
                        // DbCookieStore instance = DbCookieStore.INSTANCE;
                        // List<HttpCookie> cookies = instance.getCookies();
-
                     } else if ("false".equals(loginResult)) {
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                         startActivity(intent);

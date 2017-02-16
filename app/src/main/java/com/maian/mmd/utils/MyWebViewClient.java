@@ -12,8 +12,8 @@ import android.webkit.WebViewClient;
 
 public class MyWebViewClient extends WebViewClient {
     private ProgressDialog progressDialog;
-    Activity activity;
-    WebView webView;
+    private Activity activity;
+    private WebView webView;
     public MyWebViewClient(Activity activity,WebView webView) {
         this.activity = activity;
         this.webView = webView;

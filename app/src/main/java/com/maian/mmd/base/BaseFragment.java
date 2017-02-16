@@ -3,6 +3,7 @@ package com.maian.mmd.base;
 import android.support.v4.app.Fragment;
 
 import com.maian.mmd.utils.Contact;
+import com.maian.mmd.utils.NetRequestParamsUtil;
 import com.maian.mmd.utils.xutilsCallBack;
 
 import org.json.JSONObject;
@@ -14,12 +15,7 @@ import org.xutils.x;
  */
 public class BaseFragment extends Fragment{
     public void handleOnLine(String username,String password){
-        final String url = Contact.serviceUrl;
-        RequestParams requestParams = new RequestParams(url);
-        requestParams.addBodyParameter("className", "UserService");
-        requestParams.addBodyParameter("methodName", "login");
-        requestParams.addBodyParameter("params", "[\"" + username + "\",\"" + password + "\"]");
-        x.http().post(requestParams, new xutilsCallBack<String>() {
+        x.http().post(NetRequestParamsUtil.getLoginParms(Contact.serviceUrl,username,password), new xutilsCallBack<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
